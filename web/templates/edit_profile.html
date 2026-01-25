@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile - Gb-Technologies{% endblock %}
+{% block content %}
+<section class="section" style="margin-top: 5%;">
+  <div class="container" data-aos="fade-up" style="max-width: 600px;">
+    <h2 class="text-center mb-4">Edit Your Profile</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="mb-3">{{ form.first_name.label_tag }}{{ form.first_name }}</div>
+      <div class="mb-3">{{ form.last_name.label_tag }}{{ form.last_name }}</div>
+      <div class="mb-3">{{ form.email.label_tag }}{{ form.email }}</div>
+      <div class="mb-3">{{ form.middlename.label_tag }}{{ form.middlename }}</div>
+      <div class="mb-3">{{ form.date_of_birth.label_tag }}{{ form.date_of_birth }}</div>
+      <div class="mb-3">{{ form.phone_number.label_tag }}{{ form.phone_number }}</div>
+      <div class="mb-3">{{ form.country.label_tag }}{{ form.country }}</div>
+      <div class="mb-3">{{ form.profile_image.label_tag }}{{ form.profile_image }}</div>
+      <button type="submit" class="btn btn-primary w-100 mt-2">Save Changes</button>
+    </form>
+    <div class="text-center mt-3">
+      <a href="{% url 'view_profile' %}" class="btn btn-secondary">Back to Profile</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+<!-- This is the edit profile template for the Gb-Technologies web interface.
+     It allows users to update their profile information, including name, email,
+     date of birth, phone number, country, and profile image.
+     The form includes validation and CSRF protection. -->

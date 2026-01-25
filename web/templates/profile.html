@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Your Profile - Gb-Technologies{% endblock %}
+{% block get_started_button %}
+        <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
+    {% endblock %}
+{% block content %}
+<section class="section" style="margin-top: 5%;">
+  <div class="container text-center" data-aos="fade-up">
+    <img src="{{ profile.profile_image.url }}" class="rounded-circle mb-3" width="120" height="120" alt="Profile Image">
+    <h2>{{ user.first_name }} {{ profile.middlename }} {{ user.last_name }}</h2>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Phone:</strong> {{ profile.phone_number }}</p>
+    <p><strong>Date of Birth:</strong> {{ profile.date_of_birth }}</p>
+    <p><strong>Country:</strong> {{ profile.country }}</p>
+    <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary mt-3">Edit Profile</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Login - Gb-Technologies{% endblock %}
+{% block get_started_button %}
+  <a class="btn-getstarted" href="{% url 'register' %}">Signin</a>
+{% endblock %}
+{% block content %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const submitBtn = document.getElementById("submit-btn");
+    const requiredInputs = document.querySelectorAll("input[required]");
+
+    function checkForm() {
+      let allFilled = true;
+      requiredInputs.forEach(input => {
+        if (input.value.trim() === "") {
+          allFilled = false;
+        }
+      });
+
+      submitBtn.disabled = !allFilled;
+    }
+
+    requiredInputs.forEach(input => {
+      input.addEventListener("input", checkForm);
+    });
+  });
+</script>
+
+<section class="section" style="margin-top: 5%;">
+  <div class="container" data-aos="fade-up" style="max-width: 500px;">
+    <h2 class="text-center mb-4">Login to Gb-Technologies</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-3">{{ form.identifier.label_tag }}{{ form.identifier }}</div>
+      <div class="mb-3">{{ form.password.label_tag }}{{ form.password }}</div>
+      {% if error %}
+        <div class="alert alert-danger mt-2">{{ error }}</div>
+      {% endif %}
+      <button type="submit" class="btn btn-primary w-100 mt-2" id="submit-btn" disabled>Login</button>
+    </form>
+    <p class="text-center mt-3">
+      Don't have an account? <a href="{% url 'register' %}">Sign In</a>
+    </p>
+  </div>
+</section>
+{% endblock %}
+
