@@ -1,0 +1,7 @@
+secrets.txt
+__pycache__/
+*.pyc
+db.sqlite3
+staticfiles_build/
+.vercel/
+.env
