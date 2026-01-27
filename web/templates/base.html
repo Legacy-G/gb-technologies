@@ -25,11 +25,11 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-      <a href="{% url 'landing' %}" class="logo d-flex align-items-center me-auto">
+      <a href="{% url 'landing' %}" class="logo d-flex align-items-center">
         <h1 class="sitename">Gb-Tech</h1>
       </a>
 
-      <nav id="navmenu" class="navmenu">
+      <nav id="navmenu" class="navmenu mx-auto">
         <ul>
           <li><a href="#hero">Home</a></li>
           <li><a href="#about">About</a></li>
@@ -39,10 +39,6 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
-
-    {% block get_started_button %}
-        <a class="btn-getstarted" href="#">Get Started</a>
-    {% endblock %}
 
     </div>
   </header>
@@ -58,20 +54,20 @@
   <footer id="footer" class="footer light-background">
     <div class="container footer-top">
       <div class="row gy-4">
-        <div class="col-lg-5 col-md-12 footer-about">
+        <div class="col-lg-6 col-md-12 footer-about">
           <a href="{% url 'landing' %}" class="logo d-flex align-items-center">
             <span class="sitename">Gb-Tech</span>
           </a>
           <p>Cras fermentum odio eu feugiat lide par naso tierra...</p>
           <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
+            <a href="https://www.linkedin.com/in/gbure-thomas-gwamna"><i class="bi bi-linkedin"></i></a>
+            <a href="https://github.com/Legacy-G/"><i class="bi bi-github"></i></a>
+            <a href="https://www.facebook.com/gbure.thomas.9"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/gburethomas?igsh=MXcxc2VhZWRvOHA3Yw=="><i class="bi bi-instagram"></i></a>
           </div>
         </div>
 
-        <div class="col-lg-2 col-6 footer-links">
+        <div class="col-lg-3 col-6 footer-links">
           <h4>Useful Links</h4>
           <ul>
             <li><a href="#">Home</a></li>
@@ -82,7 +78,7 @@
           </ul>
         </div>
 
-        <div class="col-lg-2 col-6 footer-links">
+        <div class="col-lg-3 col-6 footer-links">
           <h4>Our Services</h4>
           <ul>
             <li><a href="#">Web Design</a></li>
@@ -93,20 +89,13 @@
           </ul>
         </div>
 
-        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Contact Us</h4>
-          <p>Federal University of Technology, Minna<br>Niger, Minna, Postal Code 535022<br>Nigeria</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+234 903 2228 442</span></p>
-          <p><strong>Email:</strong> <span>gburethomass@gmail.com</span></p>
-        </div>
-
       </div>
     </div>
 
     <div class="container copyright text-center">
       <p>© <strong class="px-1 sitename">Gb-Tech</strong> All Rights Reserved</p>
       <div class="credits">
-        Designed by <a href="www.linkedin.com/in/gbure-thomas-753332233/">Gbure Thomas</a>
+        Designed by <a href="https://www.linkedin.com/in/gbure-thomas-gwamna">Gbure Thomas</a>
       </div>
     </div>
 
