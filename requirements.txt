@@ -1,4 +1,3 @@
-djaiohappyeyeballs==2.6.1
 aiohttp==3.13.0
 aiosignal==1.4.0
 annotated-doc==0.0.4
