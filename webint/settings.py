@@ -119,8 +119,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    # BASE_DIR / 'webint' / 'web' / 'static',
-    BASE_DIR / 'webint' / 'authenticate' / 'static',
+    BASE_DIR / 'web' / 'static',
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
