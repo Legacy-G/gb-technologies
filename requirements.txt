@@ -22,9 +22,6 @@ docopt==0.6.2
 docutils==0.22.2
 email-validator==2.3.0
 Faker==37.11.0
-fastapi==0.123.0
-fastapi-cli==0.0.16
-fastapi-cloud-cli==0.5.2
 fastar==0.8.0
 filelock==3.19.1
 frozenlist==1.8.0
@@ -84,14 +81,12 @@ setuptools==80.9.0
 shellingham==1.5.4
 six==1.17.0
 sqlparse==0.5.3
-starlette==0.50.0
 typer==0.20.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 tzdata==2025.1
 ujson==5.11.0
 urllib3==2.5.0
-uvicorn==0.38.0
 virtualenv==20.34.0
 vobject==0.9.9
 watchfiles==1.1.1
