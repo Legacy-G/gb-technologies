@@ -1,12 +1,16 @@
 {
-    "rewrites": [
+    "builds": [{
+        "src": "webint/wsgi.py",
+        "use": "@vercel/python"
+    }],
+    "routes": [
         {
-            "source": "/static/(.*)",
-            "destination": "/static/$1"
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
         },
         {
-            "source": "/(.*)",
-            "destination": "webint/wsgi.py"
+            "src": "/(.*)",
+            "dest": "webint/wsgi.py"
         }
     ]
 }
