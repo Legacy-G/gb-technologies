@@ -12,3 +12,18 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class ContactLead(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    company = models.CharField(max_length=100, blank=True)
+    service_interest = models.CharField(max_length=100, blank=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} ({self.email}) - {self.service_interest}"
