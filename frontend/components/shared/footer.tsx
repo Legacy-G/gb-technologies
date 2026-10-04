@@ -1,7 +1,17 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Sparkles, ShieldCheck, Zap, Award } from "lucide-react";
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // Do not render marketing footer on dashboard or auth pages
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/auth")) {
+    return null;
+  }
+
   return (
     <footer className="border-t border-[var(--border-subtle)] bg-[var(--surface-base)] text-[var(--text-secondary)] transition-colors">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">

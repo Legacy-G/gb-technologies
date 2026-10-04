@@ -2,19 +2,16 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import {
   Sparkles,
   LogOut,
-  User,
-  ShieldCheck,
-  Activity,
   ExternalLink,
-  ChevronDown,
-  Building,
+  Activity,
+  Layers,
+  Users,
   Menu,
   X,
 } from "lucide-react";
@@ -32,12 +29,11 @@ interface UserProfile {
   };
 }
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function DashboardHeaderContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentView = searchParams.get("view") || "crextio";
+
   const [user, setUser] = React.useState<UserProfile | null>(null);
   const [signingOut, setSigningOut] = React.useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -48,7 +44,6 @@ export default function DashboardLayout({
         const userData = await apiClient.get<UserProfile>("/users/me/");
         setUser(userData);
       } catch {
-        // Fallback default client
         setUser({
           username: "executive_client",
           email: "executive@vancecapital.com",
@@ -75,177 +70,243 @@ export default function DashboardLayout({
   };
 
   const displayName = user?.first_name ? `${user.first_name} ${user.last_name}` : "Marcus Vance";
-  const displayCompany = user?.profile?.company || "Vance Capital Partners";
 
   return (
-    <div className="min-h-screen bg-[var(--canvas)] flex flex-col selection:bg-[var(--accent-primary)] selection:text-[var(--accent-foreground)]">
-      {/* Top Executive Navigation Bar */}
-      <header className="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--canvas)]/90 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between gap-4">
-            {/* Left: Brand + Portal Badge */}
-            <div className="flex items-center gap-4">
-              <Link href="/" className="flex items-center gap-2 group">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--accent-primary)] to-amber-400 text-[var(--accent-foreground)] shadow-md shadow-[var(--accent-glow)] font-bold">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-heading font-black tracking-tight text-base text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">
-                    GB TECHNOLOGIES
-                  </span>
-                  <span className="text-[10px] font-mono tracking-widest text-[var(--accent-primary)] uppercase font-semibold">
-                    Modernization Studio
-                  </span>
-                </div>
-              </Link>
-
-              <div className="hidden sm:block h-5 w-[1px] bg-[var(--border-subtle)]" />
-
-              <div className="hidden sm:flex items-center gap-2">
-                <Badge
-                  variant="outline"
-                  className="font-mono text-[11px] py-0.5 px-2 bg-[var(--surface-raised)] border-[var(--accent-primary)]/30 text-[var(--accent-primary)] font-bold"
-                >
-                  Client Portal
-                </Badge>
-                <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="hidden md:inline font-mono text-[11px]">Production Edge</span>
-                </div>
+    <header className="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--canvas)]/95 backdrop-blur-md transition-colors">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between gap-4">
+          {/* =================================================================== */}
+          {/* GROUP 1 (LEFT): BRAND IDENTITY & STATUS                             */}
+          {/* =================================================================== */}
+          <div className="flex items-center gap-3 shrink-0">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--accent-primary)] to-amber-400 text-[var(--accent-foreground)] shadow-md shadow-[var(--accent-glow)] font-bold transition-transform group-hover:scale-105">
+                <Sparkles className="h-5 w-5" />
               </div>
-            </div>
-
-            {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center gap-6 text-xs font-semibold text-[var(--text-secondary)]">
-              <Link
-                href="/dashboard"
-                className="text-[var(--gold-primary)] flex items-center gap-1.5"
-              >
-                <Activity className="h-3.5 w-3.5" />
-                Modernization Hub
-              </Link>
-              <Link
-                href="/#speed-checker"
-                className="hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
-              >
-                Speed &amp; Revenue Checker
-              </Link>
-              <Link
-                href="/"
-                className="hover:text-[var(--text-primary)] transition-colors flex items-center gap-1"
-              >
-                Live Flagship
-                <ExternalLink className="h-3 w-3 text-[var(--text-muted)]" />
-              </Link>
-            </div>
-
-            {/* Right: Actions, Theme, User Chip, Sign Out */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              <ThemeToggle />
-
-              {/* User Profile Pill */}
-              <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)]">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--gold-primary)]/20 text-[var(--gold-primary)] text-xs font-bold">
-                  {displayName.charAt(0)}
-                </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-xs font-bold text-[var(--text-primary)] leading-tight">
-                    {displayName}
-                  </span>
-                  <span className="text-[10px] text-[var(--text-muted)] leading-tight truncate max-w-[120px]">
-                    {displayCompany}
-                  </span>
-                </div>
-              </div>
-
-              {/* Sign Out Button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleSignOut}
-                disabled={signingOut}
-                className="text-xs text-[var(--text-secondary)] hover:text-rose-500 hover:bg-rose-500/10 h-8 px-2.5"
-                title="Sign out of Client Portal"
-              >
-                <LogOut className="h-3.5 w-3.5 sm:mr-1.5" />
-                <span className="hidden sm:inline">
-                  {signingOut ? "Exiting..." : "Sign Out"}
+              <div className="flex flex-col">
+                <span className="font-heading font-black tracking-tight text-sm text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">
+                  GB TECHNOLOGIES
                 </span>
-              </Button>
-
-              {/* Mobile menu toggle */}
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
-                aria-label="Toggle navigation menu"
-              >
-                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Drawer */}
-          {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t border-[var(--border-subtle)] space-y-3">
-              <div className="flex items-center gap-2 px-2 py-1 text-xs text-[var(--text-muted)]">
-                <Building className="h-3.5 w-3.5 text-[var(--gold-primary)]" />
-                <span>Signed in as <strong className="text-[var(--text-primary)]">{displayName}</strong> ({displayCompany})</span>
+                <span className="text-[9px] font-mono tracking-widest text-[var(--accent-primary)] uppercase font-bold">
+                  Client Hub
+                </span>
               </div>
-              <div className="flex flex-col gap-2 pt-2 text-sm font-medium">
-                <Link
-                  href="/dashboard"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 rounded-lg bg-[var(--surface-raised)] text-[var(--gold-primary)] font-bold flex items-center gap-2"
-                >
-                  <Activity className="h-4 w-4" />
-                  Modernization Hub
-                </Link>
-                <Link
-                  href="/#speed-checker"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
-                >
-                  Speed &amp; Revenue Checker
-                </Link>
-                <Link
-                  href="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface-raised)] flex items-center justify-between"
-                >
-                  <span>Live Flagship Site</span>
-                  <ExternalLink className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </header>
+            </Link>
 
-      {/* Main Dashboard Content Area */}
-      <main className="flex-1 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        {children}
-      </main>
-
-      {/* Executive Portal Footer */}
-      <footer className="border-t border-[var(--border-subtle)] bg-[var(--surface-canvas)] py-6">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-[var(--gold-primary)]" />
-            <span>
-              256-bit TLS Encrypted Client Portal • SOC 2 Type II Compliant Architecture
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-secondary)] font-semibold">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Production Edge</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span>© {new Date().getFullYear()} GB Technologies Ltd.</span>
-            <span className="h-3 w-[1px] bg-[var(--border-subtle)]" />
-            <Link href="/" className="hover:text-[var(--gold-primary)] transition-colors">
-              Enterprise Terms
+          {/* =================================================================== */}
+          {/* GROUP 2 (CENTER): CREXTIO / FUNDVIEW SEGMENTED CAPSULE NAV         */}
+          {/* =================================================================== */}
+          <nav className="hidden md:flex items-center p-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] shadow-xs">
+            <Link
+              href="/dashboard?view=crextio"
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+                currentView === "crextio"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
+            >
+              <Sparkles className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+              <span>Executive Hub</span>
             </Link>
+
+            <Link
+              href="/dashboard?view=fundview"
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+                currentView === "fundview"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
+            >
+              <Activity className="h-3.5 w-3.5 text-emerald-500" />
+              <span>Telemetry &amp; Graphs</span>
+            </Link>
+
+            <Link
+              href="/dashboard?view=leads"
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+                currentView === "leads"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
+            >
+              <Users className="h-3.5 w-3.5 text-amber-500" />
+              <span>Inbound Leads</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[var(--accent-primary)]/20 text-[var(--accent-primary)] font-bold">
+                18
+              </span>
+            </Link>
+
+            <Link
+              href="/dashboard?view=milestones"
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+                currentView === "milestones"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
+            >
+              <Layers className="h-3.5 w-3.5 text-cyan-500" />
+              <span>Roadmap</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
+                85%
+              </span>
+            </Link>
+          </nav>
+
+          {/* =================================================================== */}
+          {/* GROUP 3 (RIGHT): EXECUTIVE UTILITIES & PROFILE                      */}
+          {/* =================================================================== */}
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            {/* Discrete Flagship Site Link */}
+            <Link
+              href="/"
+              className="hidden lg:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)] transition-all"
+              title="Return to public marketing flagship"
+            >
+              <span>Live Flagship</span>
+              <ExternalLink className="h-3 w-3 text-[var(--text-muted)]" />
+            </Link>
+
+            {/* Dark / Light Mode Switcher */}
+            <ThemeToggle />
+
+            {/* Compact Executive User Pill */}
+            <div className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)]">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 text-[var(--accent-foreground)] text-[11px] font-bold">
+                {displayName.charAt(0)}
+              </div>
+              <span className="text-xs font-bold text-[var(--text-primary)] hidden sm:inline">
+                {displayName}
+              </span>
+            </div>
+
+            {/* Sign Out Action */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSignOut}
+              disabled={signingOut}
+              className="h-8 w-8 p-0 rounded-full text-[var(--text-secondary)] hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
+              title="Sign out of Client Portal"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
+
+            {/* Mobile Drawer Toggle */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-1.5 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
-      </footer>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-[var(--border-subtle)] space-y-2">
+            <Link
+              href="/dashboard?view=crextio"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-mono font-bold ${
+                currentView === "crextio"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)]"
+                  : "text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
+              }`}
+            >
+              <Sparkles className="h-4 w-4 text-[var(--accent-primary)]" />
+              <span>✦ Executive Hub</span>
+            </Link>
+
+            <Link
+              href="/dashboard?view=fundview"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-mono font-bold ${
+                currentView === "fundview"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)]"
+                  : "text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
+              }`}
+            >
+              <Activity className="h-4 w-4 text-emerald-500" />
+              <span>📊 Telemetry &amp; Graphs</span>
+            </Link>
+
+            <Link
+              href="/dashboard?view=leads"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-mono font-bold ${
+                currentView === "leads"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)]"
+                  : "text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-amber-500" />
+                <span>⚡ Inbound Leads</span>
+              </span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[var(--accent-primary)]/20 text-[var(--accent-primary)] font-bold">
+                18
+              </span>
+            </Link>
+
+            <Link
+              href="/dashboard?view=milestones"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-mono font-bold ${
+                currentView === "milestones"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)]"
+                  : "text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <Layers className="h-4 w-4 text-cyan-500" />
+                <span>🗺️ Roadmap</span>
+              </span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
+                85%
+              </span>
+            </Link>
+
+            <div className="pt-2 border-t border-[var(--border-subtle)]">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between px-3 py-2 text-xs font-semibold text-[var(--text-secondary)]"
+              >
+                <span>Live Flagship Site</span>
+                <ExternalLink className="h-3.5 w-3.5 text-[var(--text-muted)]" />
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+}
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="min-h-screen bg-[var(--canvas)] flex flex-col selection:bg-[var(--accent-primary)] selection:text-[var(--accent-foreground)]">
+      {/* Top Executive Navigation Bar with Suspense for safe search params access */}
+      <React.Suspense fallback={<div className="h-16 w-full border-b border-[var(--border-subtle)] bg-[var(--canvas)]" />}>
+        <DashboardHeaderContent />
+      </React.Suspense>
+
+      {/* Main Dashboard Workspace (Zero Bottom Footer) */}
+      <main className="flex-1 w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {children}
+      </main>
     </div>
   );
 }

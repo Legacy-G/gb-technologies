@@ -2,12 +2,19 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X, ArrowRight } from "lucide-react";
 
 export function Navbar() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  // Do not render the marketing navbar on the client portal dashboard or auth screens
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/auth")) {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full glass-champagne transition-all duration-200">
