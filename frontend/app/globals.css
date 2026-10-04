@@ -109,26 +109,26 @@ body {
 
 /* Fluid Typography Utilities */
 .text-fluid-hero {
-  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-}
-
-.text-fluid-h1 {
-  font-size: clamp(2.0rem, 3.5vw + 0.8rem, 3.25rem);
-  line-height: 1.15;
+  font-size: clamp(1.875rem, 2.8vw + 0.5rem, 3.0rem);
+  line-height: 1.18;
   letter-spacing: -0.025em;
 }
 
-.text-fluid-h2 {
-  font-size: clamp(1.5rem, 2.5vw + 0.6rem, 2.25rem);
-  line-height: 1.25;
+.text-fluid-h1 {
+  font-size: clamp(1.75rem, 2.4vw + 0.5rem, 2.5rem);
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
+.text-fluid-h2 {
+  font-size: clamp(1.35rem, 1.8vw + 0.4rem, 1.875rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
 .text-fluid-body {
-  font-size: clamp(0.9375rem, 0.5vw + 0.8rem, 1.0625rem);
-  line-height: 1.6;
+  font-size: clamp(0.9375rem, 0.35vw + 0.8rem, 1.05rem);
+  line-height: 1.55;
 }
 
 /* Glassmorphism Surface Utility */

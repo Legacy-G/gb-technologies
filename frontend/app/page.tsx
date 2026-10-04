@@ -85,7 +85,7 @@ export default function HomePage() {
       {/* ========================================================================= */}
       {/* 1. HERO SECTION (Warm Champagne Ivory Atmosphere with Flowing Gold Waves) */}
       {/* ========================================================================= */}
-      <section className="relative overflow-hidden pt-16 pb-24 md:pt-28 md:pb-36 border-b border-[var(--border-subtle)]">
+      <section className="relative overflow-hidden pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-14 md:pb-20 border-b border-[var(--border-subtle)]">
         {/* Soft Champagne & Warm Gold Ambient Radial Atmosphere */}
         <div
           aria-hidden="true"
@@ -97,81 +97,81 @@ export default function HomePage() {
         />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center text-center max-w-4xl mx-auto space-y-8">
+          <div className="flex flex-col items-center text-center max-w-4xl mx-auto space-y-4 sm:space-y-5">
             {/* Golden Announcement Pill */}
-            <Badge variant="accent" className="gap-2 py-1.5 px-4 text-xs font-semibold shadow-xs">
+            <Badge variant="accent" className="gap-2 py-1 px-3.5 text-xs font-semibold shadow-xs">
               <Sparkles className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-              <span>Revenue-Engineered Digital Flagships & Bespoke Web Platforms</span>
+              <span>Bespoke Web Engineering</span>
             </Badge>
 
             {/* Display H1 Typography (Deep Earthy Bronze) */}
-            <h1 className="text-fluid-hero font-extrabold text-[var(--text-primary)] tracking-tight">
-              We Build High-Converting Web Platforms for Companies That Cannot Afford to Look Ordinary or Load Slow
+            <h1 className="text-fluid-hero font-extrabold text-[var(--text-primary)] tracking-tight max-w-3xl mx-auto">
+              Bespoke Web Platforms Built for Speed &amp; Revenue
             </h1>
 
             {/* Lead Narrative */}
-            <p className="text-fluid-body text-[var(--text-secondary)] max-w-2xl leading-relaxed">
-              Transforming outdated websites into lightning-fast, high-converting digital flagships. We combine bespoke Next.js decoupled engineering, sub-second speeds (&lt;0.8s), and design mastery that turns visitors into high-value pipeline.
+            <p className="text-fluid-body text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
+              We engineer sub-second digital flagships and decoupled web applications that turn visitors into high-value clients.
             </p>
 
             {/* Hero Action CTA Group (Warm Gold Button from Reference Image) */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-center gap-3.5 pt-1">
               <a href="#audit">
-                <Button variant="glow" size="lg" className="w-full sm:w-auto gap-2 text-base px-8 py-6 font-bold shadow-md">
+                <Button variant="glow" size="lg" className="w-full sm:w-auto gap-2 px-6 py-5 font-bold shadow-md">
                   <span>Get Started</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
               <a href="#calculator">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto text-base px-6 py-6 border-[var(--border-strong)]">
-                  Calculate Revenue ROI
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto px-5 py-5 border-[var(--border-strong)]">
+                  Calculate ROI
                 </Button>
               </a>
             </div>
 
             {/* Signature 4 Elevated Cards (Directly derived from the 4 white cards in the screenshot) */}
-            <div className="pt-12 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 w-full max-w-5xl">
+            <div className="pt-8 sm:pt-10 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full max-w-5xl">
               {/* Card 1: Easel / UI Craft */}
-              <div className="glass-card rounded-xl p-5 text-left space-y-3 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
-                  <LayoutTemplate className="h-5 w-5" />
+              <div className="glass-card rounded-xl p-4 sm:p-5 text-left space-y-2.5 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                  <LayoutTemplate className="h-4.5 w-4.5" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">Bespoke Design</h4>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">Zero generic templates. Crafted for prestige and market authority.</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5 leading-snug">Zero generic templates. Crafted for prestige and market authority.</p>
                 </div>
               </div>
 
               {/* Card 2: Diamond / Precision */}
-              <div className="glass-card rounded-xl p-5 text-left space-y-3 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
-                  <Gem className="h-5 w-5" />
+              <div className="glass-card rounded-xl p-4 sm:p-5 text-left space-y-2.5 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                  <Gem className="h-4.5 w-4.5" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">Sub-Second Speed</h4>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">&lt;0.8s First Contentful Paint. 100/100 Core Web Vitals.</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5 leading-snug">&lt;0.8s First Contentful Paint. 100/100 Core Web Vitals.</p>
                 </div>
               </div>
 
               {/* Card 3: Location / Global Edge */}
-              <div className="glass-card rounded-xl p-5 text-left space-y-3 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
-                  <Globe className="h-5 w-5" />
+              <div className="glass-card rounded-xl p-4 sm:p-5 text-left space-y-2.5 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                  <Globe className="h-4.5 w-4.5" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">Global Decoupling</h4>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">Next.js Edge + Django REST Framework API scalability.</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5 leading-snug">Next.js Edge + Django REST Framework API scalability.</p>
                 </div>
               </div>
 
               {/* Card 4: Command / Conversion */}
-              <div className="glass-card rounded-xl p-5 text-left space-y-3 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
-                  <Command className="h-5 w-5" />
+              <div className="glass-card rounded-xl p-4 sm:p-5 text-left space-y-2.5 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                  <Command className="h-4.5 w-4.5" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[var(--text-primary)]">Conversion ROI</h4>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">+40% to +180% average pipeline conversion lift.</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5 leading-snug">+40% to +180% average pipeline conversion lift.</p>
                 </div>
               </div>
             </div>
