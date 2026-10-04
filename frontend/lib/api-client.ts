@@ -2,7 +2,7 @@
  * Type-safe API client for communicating with Django REST Framework backend.
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "/api/v1").replace(/\/+$/, "");
 
 export interface ApiErrorResponse {
   message?: string;
@@ -23,7 +23,14 @@ export class ApiError extends Error {
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const url = endpoint.startsWith("http") ? endpoint : `${API_BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+  let url: string;
+  if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) {
+    url = endpoint;
+  } else {
+    // Strip leading /api/v1 or / from endpoint to prevent duplicate prefixing
+    const cleanEndpoint = endpoint.replace(/^\/?api\/v1\/?/, "").replace(/^\//, "");
+    url = `${API_BASE_URL}/${cleanEndpoint}`;
+  }
 
   const headers = new Headers(options.headers || {});
   if (!headers.has("Content-Type") && !(options.body instanceof FormData)) {
@@ -41,7 +48,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     try {
       errorData = await response.json();
     } catch {
-      errorData = { message: response.statusText };
+      errorData = { message: response.statusText || `HTTP Error ${response.status}` };
     }
     throw new ApiError(response.status, errorData);
   }

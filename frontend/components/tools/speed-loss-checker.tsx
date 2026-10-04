@@ -104,7 +104,7 @@ export function SpeedLossChecker({ onClaimBlueprint }: SpeedLossCheckerProps) {
     }, 2400);
 
     try {
-      const response = await apiClient.post<DiagnosticResult>("/api/v1/audit/speed-loss/", {
+      const response = await apiClient.post<DiagnosticResult>("/audit/speed-loss/", {
         url: url.trim(),
         monthly_visitors: monthlyVisitors,
         average_deal_value: averageDealValue,
@@ -117,7 +117,13 @@ export function SpeedLossChecker({ onClaimBlueprint }: SpeedLossCheckerProps) {
     } catch (err: any) {
       clearTimeout(timer1);
       clearTimeout(timer2);
-      setError(err?.response?.data?.url?.[0] || err?.message || "Failed to analyze target website. Please check the URL and try again.");
+      const errMsg =
+        err?.data?.url?.[0] ||
+        err?.data?.message ||
+        err?.data?.detail ||
+        err?.message ||
+        "Failed to analyze target website. Please check the URL and try again.";
+      setError(errMsg);
     } finally {
       setLoading(false);
       setProgressStep(0);
