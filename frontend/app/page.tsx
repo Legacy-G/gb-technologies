@@ -180,41 +180,91 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 2. QUANTIFIABLE SPEED & CONVERSION METRICS RIBBON */}
+      {/* 2. QUANTIFIABLE SPEED & CONVERSION METRICS DOCK */}
       {/* ========================================================================= */}
-      <section className="py-12 bg-[var(--surface-base)] border-b border-[var(--border-subtle)]">
+      <section className="py-10 bg-[var(--surface-base)]/50 border-b border-[var(--border-subtle)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <div className="space-y-1">
-              <div className="text-3xl lg:text-4xl font-extrabold text-[var(--accent-primary)]">
-                $180M+
+          {/* Executive KPI Dock Container */}
+          <div className="glass-card rounded-2xl p-2 sm:p-3 border border-[var(--border-subtle)] shadow-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border-subtle)]">
+              {/* Metric 1: Pipeline Revenue */}
+              <div className="p-4 sm:p-5 flex flex-col justify-between space-y-3 group hover:bg-[var(--surface-raised)]/40 transition-colors rounded-xl">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--accent-primary)]">
+                    Pipeline Impact
+                  </span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                    <TrendingUp className="h-3.5 w-3.5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-[var(--accent-primary)] tracking-tight">
+                    $180M+
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1 font-medium leading-snug">
+                    Client pipeline revenue generated
+                  </p>
+                </div>
               </div>
-              <div className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
-                Client Pipeline Revenue Generated
+
+              {/* Metric 2: Speed Benchmark */}
+              <div className="p-4 sm:p-5 flex flex-col justify-between space-y-3 group hover:bg-[var(--surface-raised)]/40 transition-colors rounded-xl">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                    Speed Benchmark
+                  </span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    <Zap className="h-3.5 w-3.5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
+                    &lt; 0.8s
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1 font-medium leading-snug">
+                    Median First Contentful Paint (FCP)
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-3xl lg:text-4xl font-extrabold text-[var(--text-primary)]">
-                &lt; 0.8s
+
+              {/* Metric 3: Conversion Lift */}
+              <div className="p-4 sm:p-5 flex flex-col justify-between space-y-3 group hover:bg-[var(--surface-raised)]/40 transition-colors rounded-xl">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--accent-primary)]">
+                    Conversion Delta
+                  </span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                    <Gauge className="h-3.5 w-3.5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-[var(--accent-primary)] tracking-tight">
+                    +84%
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1 font-medium leading-snug">
+                    Average qualified conversion lift
+                  </p>
+                </div>
               </div>
-              <div className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
-                Median First Contentful Paint (FCP)
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-3xl lg:text-4xl font-extrabold text-[var(--accent-primary)]">
-                +84%
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
-                Average Qualified Conversion Lift
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-3xl lg:text-4xl font-extrabold text-[var(--text-primary)]">
-                100 / 100
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
-                Google Lighthouse Performance Score
+
+              {/* Metric 4: Lighthouse Score */}
+              <div className="p-4 sm:p-5 flex flex-col justify-between space-y-3 group hover:bg-[var(--surface-raised)]/40 transition-colors rounded-xl">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                    Audit Standard
+                  </span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
+                    100 / 100
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1 font-medium leading-snug">
+                    Google Lighthouse performance score
+                  </p>
+                </div>
               </div>
             </div>
           </div>
