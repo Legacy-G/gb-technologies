@@ -1,8 +1,16 @@
-# GB Technologies — Enterprise Platform Modernization
+# GB Technologies — Enterprise Digital Transformation & Custom Software
 
-This repository contains the enterprise platform for **GB Technologies**, organized as a decoupled Level 3 architecture:
-- **`backend/`**: Headless Django REST Framework API (`/api/v1/`), OpenAPI schema generator (`drf-spectacular`), secure HTTP-only cookie JWT authentication, and data models.
-- **`frontend/`**: Next.js App Router (TypeScript, Tailwind CSS, OKLCH design system, shadcn/ui, Radix primitives, Framer Motion).
+Enterprise decoupled platform for **GB Technologies**, positioned as a premier **Enterprise Digital Transformation & Custom Software Development** consultancy.
+
+- **Frontend**: Next.js 16 App Router (React 19, TypeScript, Tailwind CSS v4, **Deep Slate & Royal Indigo** OKLCH design system, shadcn/ui primitives, Framer Motion)
+- **Backend**: Headless Django 5 REST Framework API (`/api/v1/`), OpenAPI 3.1 schema engine (`drf-spectacular`), secure HTTP-only cookie JWT authentication (`SimpleJWT`), and CORS controls.
+
+---
+
+## Strategic Differentiator
+
+* **GB Technologies (`/gb-technologies`)**: Specializes in **Enterprise Digital Transformation & Custom Software Development** (legacy monolith modernization, bespoke enterprise application engineering, dedicated senior engineering pods, domain-driven architecture).
+* **GB Cloud (`/gbcloud`)**: Dedicated to **Autonomous Cloud Infrastructure & DevOps** (multi-cloud orchestration, serverless meshes, real-time telemetry, 99.999% SLA edge computing).
 
 ---
 
@@ -34,25 +42,14 @@ cd backend
 python manage.py migrate
 python manage.py runserver 8000
 ```
-- API Root: `http://localhost:8000/api/v1/`
-- OpenAPI Schema: `http://localhost:8000/api/v1/schema/`
+- API Base URL: `http://localhost:8000/api/v1/`
 - Interactive Swagger UI: `http://localhost:8000/api/v1/docs/`
-- Django Admin: `http://localhost:8000/admin/`
+- OpenAPI Schema: `http://localhost:8000/api/v1/schema/`
+- Service Health Probe: `http://localhost:8000/api/v1/health/`
 
 ### 2. Frontend Application (Next.js)
 ```bash
 cd frontend
-npm install
 npm run dev
 ```
 - Web Application: `http://localhost:3000`
-
----
-
-## Architecture & Specifications
-
-For comprehensive architecture plans, visual design tokens, and migration schedules, refer to the documentation:
-- **Color Tokens**: OKLCH palette, contrast matrix, and theme system.
-- **Design System**: Typography scales, spacing grid, 8-state component specs.
-- **Implementation Plan**: API specifications, serializers, caching, and security boundaries.
-- **Migration Roadmap**: Strangler reverse proxy routing and phase-by-phase delivery schedule.
