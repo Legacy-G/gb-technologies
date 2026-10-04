@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
-from web.models import UserProfile, ContactLead
+from web.models import UserProfile, ContactLead, WebsiteSpeedAudit
 
 
 class GBTechnologiesAPITestCase(TestCase):
@@ -124,3 +124,34 @@ class GBTechnologiesAPITestCase(TestCase):
         response = self.client.post(url, {})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Successfully logged out", response.data['message'])
+
+    def test_website_speed_audit_success(self):
+        """Test POST /api/v1/audit/speed-loss/ executes diagnostic and calculates financial impact."""
+        url = reverse('api_v1:audit_speed_loss')
+        payload = {
+            "url": "https://example.com",
+            "monthly_visitors": 60000,
+            "average_deal_value": 450.00,
+            "conversion_rate": 2.5,
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('metrics', response.data)
+        self.assertIn('financial_impact', response.data)
+        self.assertIn('decoupled_projection', response.data)
+        self.assertGreater(response.data['metrics']['measured_fcp'], 0)
+        self.assertGreater(response.data['financial_impact']['annual_revenue_lost'], 0)
+        self.assertTrue(WebsiteSpeedAudit.objects.filter(url="https://example.com").exists())
+
+    def test_website_speed_audit_url_normalization(self):
+        """Test URL without scheme is normalized to https://."""
+        url = reverse('api_v1:audit_speed_loss')
+        payload = {
+            "url": "acmecorp.com",
+            "monthly_visitors": 25000,
+            "average_deal_value": 300.00,
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['url'], "https://acmecorp.com")
+        self.assertTrue(WebsiteSpeedAudit.objects.filter(url="https://acmecorp.com").exists())

@@ -36,13 +36,13 @@ export function Navbar() {
             Capabilities
           </Link>
           <Link href="/#roi-gap" className="transition-colors hover:text-[var(--text-primary)]">
-            The Speed & ROI Gap
+            The Speed Gap
           </Link>
-          <Link href="/#engineering" className="transition-colors hover:text-[var(--text-primary)]">
-            Bespoke Engineering
+          <Link href="/#speed-checker" className="transition-colors hover:text-[var(--text-primary)] text-[var(--accent-primary)] font-semibold">
+            Speed Diagnostic
           </Link>
           <Link href="/#calculator" className="transition-colors hover:text-[var(--text-primary)]">
-            Revenue Calculator
+            ROI Calculator
           </Link>
         </nav>
 
@@ -92,21 +92,21 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              The Speed & ROI Gap
+              The Speed Gap
             </Link>
             <Link
-              href="/#engineering"
+              href="/#speed-checker"
               onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
+              className="px-3 py-2 rounded-md text-base font-medium text-[var(--accent-primary)] hover:bg-[var(--surface-raised)] font-bold"
             >
-              Bespoke Engineering
+              Speed Diagnostic
             </Link>
             <Link
               href="/#calculator"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Revenue Calculator
+              ROI Calculator
             </Link>
           </div>
           <div className="pt-2 flex flex-col gap-2">

@@ -27,3 +27,22 @@ class ContactLead(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.email}) - {self.service_interest}"
+
+
+class WebsiteSpeedAudit(models.Model):
+    url = models.URLField(max_length=500)
+    monthly_visitors = models.PositiveIntegerField(default=50000)
+    average_deal_value = models.DecimalField(max_digits=12, decimal_places=2, default=500.00)
+    conversion_rate = models.FloatField(default=2.0)
+    measured_fcp = models.FloatField(default=3.2)
+    measured_lcp = models.FloatField(default=4.8)
+    lighthouse_score = models.PositiveSmallIntegerField(default=45)
+    annual_revenue_lost = models.DecimalField(max_digits=14, decimal_places=2, default=0.00)
+    annual_recoverable_revenue = models.DecimalField(max_digits=14, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Audit: {self.url} (Score: {self.lighthouse_score}/100, Lost: ${self.annual_revenue_lost})"

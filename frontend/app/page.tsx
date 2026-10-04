@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { apiClient } from "@/lib/api-client";
+import { SpeedLossChecker } from "@/components/tools/speed-loss-checker";
 import {
   Sparkles,
   Zap,
@@ -54,6 +55,20 @@ export default function HomePage() {
   });
   const [formStatus, setFormStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = React.useState("");
+
+  const handleClaimBlueprint = (data: { url: string; lostRevenue: number; recoverableRevenue: number; fcp: number }) => {
+    setFormData((prev) => ({
+      ...prev,
+      company: prev.company || data.url.replace(/^https?:\/\//, "").replace(/\/.*$/, ""),
+      service_interest: "Decoupled Modernization & Speed Optimization",
+      message: `Audited Target: ${data.url}\nMeasured Mobile FCP: ${data.fcp}s\nEstimated Annual Revenue Lost: -$${Math.round(data.lostRevenue).toLocaleString()}/yr\nProjected Recoverable Revenue: +$${Math.round(data.recoverableRevenue).toLocaleString()}/yr\n\nPlease provide our full architecture modernization blueprint.`,
+    }));
+
+    const auditSection = document.getElementById("audit");
+    if (auditSection) {
+      auditSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -494,7 +509,16 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 5. INTERACTIVE REVENUE & CONVERSION CALCULATOR */}
+      {/* 5. LIVE WEBSITE SPEED & REVENUE LOSS DIAGNOSTIC TOOL */}
+      {/* ========================================================================= */}
+      <section id="speed-checker" className="py-20 bg-[var(--surface-base)] border-b border-[var(--border-subtle)]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SpeedLossChecker onClaimBlueprint={handleClaimBlueprint} />
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6. INTERACTIVE REVENUE & CONVERSION CALCULATOR */}
       {/* ========================================================================= */}
       <section id="calculator" className="py-24 bg-[var(--canvas)] border-b border-[var(--border-subtle)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -527,7 +551,7 @@ export default function HomePage() {
                     step={5000}
                     value={monthlyVisitors}
                     onChange={(e) => setMonthlyVisitors(Number(e.target.value))}
-                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)]"
+                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)] outline-none focus:outline-none focus-visible:outline-none"
                   />
                   <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
                     <span>5,000</span>
@@ -551,7 +575,7 @@ export default function HomePage() {
                     step={0.1}
                     value={currentConversionRate}
                     onChange={(e) => setCurrentConversionRate(Number(e.target.value))}
-                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)]"
+                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)] outline-none focus:outline-none focus-visible:outline-none"
                   />
                   <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
                     <span>0.5% (Subpar)</span>
@@ -575,7 +599,7 @@ export default function HomePage() {
                     step={100}
                     value={averageDealValue}
                     onChange={(e) => setAverageDealValue(Number(e.target.value))}
-                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)]"
+                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)] outline-none focus:outline-none focus-visible:outline-none"
                   />
                   <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
                     <span>$100</span>
@@ -590,7 +614,7 @@ export default function HomePage() {
                 <span className="text-xs uppercase font-bold tracking-wider text-[var(--text-muted)]">
                   Projected Annual Revenue Lift
                 </span>
-                <div className="text-4xl sm:text-5xl font-extrabold text-[var(--accent-primary)] font-mono tracking-tight">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--accent-primary)] font-mono tracking-tight break-words">
                   +${Math.round(annualRevenueGain).toLocaleString()}
                 </div>
                 <p className="text-xs text-[var(--text-secondary)] leading-relaxed">

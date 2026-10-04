@@ -11,6 +11,7 @@ from .views_api import (
     RegisterAPIView,
     CurrentUserAPIView,
     ContactLeadCreateAPIView,
+    WebsiteSpeedAuditAPIView,
 )
 
 app_name = 'api_v1'
@@ -30,4 +31,7 @@ urlpatterns = [
 
     # Contact & Leads
     path('contact/leads/', ContactLeadCreateAPIView.as_view(), name='contact_leads'),
+
+    # Live Website Speed & Revenue Loss Diagnostic
+    path('audit/speed-loss/', WebsiteSpeedAuditAPIView.as_view(), name='audit_speed_loss'),
 ]

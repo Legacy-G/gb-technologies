@@ -5,7 +5,8 @@ Django REST Framework serializers for GB Technologies Decoupled Platform.
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
-from .models import UserProfile, ContactLead
+from decimal import Decimal
+from .models import UserProfile, ContactLead, WebsiteSpeedAudit
 import re
 
 
@@ -109,3 +110,42 @@ class ContactLeadSerializer(serializers.ModelSerializer):
         model = ContactLead
         fields = ['id', 'name', 'email', 'company', 'service_interest', 'message', 'created_at']
         read_only_fields = ['id', 'created_at']
+
+
+class WebsiteSpeedAuditSerializer(serializers.ModelSerializer):
+    """Serializer for website speed diagnostics and annual revenue loss estimation."""
+    url = serializers.CharField(max_length=500)
+    monthly_visitors = serializers.IntegerField(default=50000, min_value=500, max_value=50000000)
+    average_deal_value = serializers.DecimalField(max_digits=12, decimal_places=2, default=500.00, min_value=Decimal('1.00'))
+    conversion_rate = serializers.FloatField(default=2.0, min_value=0.1, max_value=50.0)
+
+    class Meta:
+        model = WebsiteSpeedAudit
+        fields = [
+            'id',
+            'url',
+            'monthly_visitors',
+            'average_deal_value',
+            'conversion_rate',
+            'measured_fcp',
+            'measured_lcp',
+            'lighthouse_score',
+            'annual_revenue_lost',
+            'annual_recoverable_revenue',
+            'created_at',
+        ]
+        read_only_fields = [
+            'id',
+            'measured_fcp',
+            'measured_lcp',
+            'lighthouse_score',
+            'annual_revenue_lost',
+            'annual_recoverable_revenue',
+            'created_at',
+        ]
+
+    def validate_url(self, value):
+        value = value.strip()
+        if not value.startswith(('http://', 'https://')):
+            value = f'https://{value}'
+        return value

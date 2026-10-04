@@ -156,3 +156,71 @@ body {
   border: 1px solid var(--border-gold);
   box-shadow: 0 0 15px -3px var(--accent-glow);
 }
+
+/* Custom Luxury Range Slider (Suppresses default browser focus box & styles track/thumb) */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none !important;
+}
+
+input[type="range"]:focus,
+input[type="range"]:focus-visible,
+input[type="range"]:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* WebKit Track & Thumb */
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: var(--surface-raised);
+  height: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  outline: none !important;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px;
+  background: linear-gradient(135deg, oklch(0.72 0.17 82), oklch(0.62 0.15 78));
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 9999px;
+  border: 2px solid var(--surface-base);
+  box-shadow: 0 0 10px -1px var(--accent-glow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  outline: none !important;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 14px 2px var(--accent-glow);
+}
+
+/* Firefox Track & Thumb */
+input[type="range"]::-moz-range-track {
+  background-color: var(--surface-raised);
+  height: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  outline: none !important;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: linear-gradient(135deg, oklch(0.72 0.17 82), oklch(0.62 0.15 78));
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 9999px;
+  border: 2px solid var(--surface-base);
+  box-shadow: 0 0 10px -1px var(--accent-glow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  outline: none !important;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
