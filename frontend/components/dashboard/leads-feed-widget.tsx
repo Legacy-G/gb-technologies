@@ -98,20 +98,20 @@ export function LeadsFeedWidget() {
   });
 
   return (
-    <div className="glass-card rounded-2xl p-5 sm:p-6 border border-[var(--border-subtle)] space-y-5">
+    <div className="glass-card rounded-3xl p-6 sm:p-7 border border-[var(--border-subtle)] space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border-subtle)]">
         <div>
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
               <Users className="h-4 w-4" />
             </div>
-            <h3 className="text-base font-bold text-[var(--text-primary)]">
+            <h3 className="text-base font-bold text-[var(--text-primary)] font-heading">
               Live Inbound Leads &amp; Consultations
             </h3>
           </div>
           <p className="text-xs text-[var(--text-muted)] mt-1">
-            Real-time prospective enterprise inquiries captured via <code className="text-[var(--accent-primary)] font-mono">/api/v1/contact/leads/</code>
+            Real-time prospective enterprise inquiries captured via <code className="text-[var(--accent-primary)] font-mono font-bold">/api/v1/contact/leads/</code>
           </p>
         </div>
 
@@ -121,32 +121,32 @@ export function LeadsFeedWidget() {
             size="sm"
             onClick={fetchLeads}
             disabled={loading}
-            className="h-8 gap-1.5 text-xs text-[var(--text-secondary)] border border-[var(--border-subtle)]"
+            className="h-8 gap-1.5 text-xs text-[var(--text-secondary)] border border-[var(--border-subtle)] rounded-full px-3"
           >
             <RotateCw className={`h-3 w-3 ${loading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
           </Button>
-          <span className="text-[11px] font-mono px-2 py-1 rounded bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold">
+          <span className="text-[11px] font-mono px-3 py-1 rounded-full bg-[var(--accent-primary)]/15 text-[var(--accent-primary)] font-bold border border-[var(--accent-primary)]/30">
             {leads.length} Active Leads
           </span>
         </div>
       </div>
 
       {/* KPI Mini-Row */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="rounded-2xl bg-[var(--surface-raised)] p-3.5 border border-[var(--border-subtle)]">
           <div className="text-[11px] text-[var(--text-muted)] font-medium">Total Inquiries</div>
           <div className="text-xl font-extrabold text-[var(--text-primary)] font-mono mt-0.5">
             {leads.length}
           </div>
         </div>
-        <div className="rounded-xl bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
+        <div className="rounded-2xl bg-[var(--surface-raised)] p-3.5 border border-[var(--border-subtle)]">
           <div className="text-[11px] text-[var(--text-muted)] font-medium">Avg Deal Scope</div>
           <div className="text-xl font-extrabold text-[var(--accent-primary)] font-mono mt-0.5">
             $45,000+
           </div>
         </div>
-        <div className="rounded-xl bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
+        <div className="rounded-2xl bg-[var(--surface-raised)] p-3.5 border border-[var(--border-subtle)]">
           <div className="text-[11px] text-[var(--text-muted)] font-medium">Qualification Rate</div>
           <div className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
             87.5%
@@ -154,7 +154,7 @@ export function LeadsFeedWidget() {
         </div>
       </div>
 
-      {/* Search & Filter Bar */}
+      {/* Search & Capsule Filter Bar */}
       <div className="flex flex-col sm:flex-row gap-2.5">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3 top-2.5 h-3.5 w-3.5 text-[var(--text-muted)]" />
@@ -163,7 +163,7 @@ export function LeadsFeedWidget() {
             placeholder="Search leads by name, email, or firm..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8 h-8 text-xs bg-[var(--surface-base)]"
+            className="pl-8 h-9 text-xs bg-[var(--surface-base)] rounded-xl border-[var(--border-subtle)]"
           />
         </div>
         <div className="flex gap-1.5 overflow-x-auto pb-1 sm:pb-0">
@@ -171,10 +171,10 @@ export function LeadsFeedWidget() {
             <button
               key={filter}
               onClick={() => setServiceFilter(filter)}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-colors shrink-0 ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold transition-all shrink-0 ${
                 serviceFilter === filter
-                  ? "bg-[var(--accent-primary)] text-[var(--accent-foreground)]"
-                  : "bg-[var(--surface-raised)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
+                  : "bg-[var(--surface-raised)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)]"
               }`}
             >
               {filter}

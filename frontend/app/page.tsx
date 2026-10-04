@@ -43,6 +43,11 @@ export default function HomePage() {
   const monthlyRevenueGain = projectedMonthlyRevenue - currentMonthlyRevenue;
   const annualRevenueGain = monthlyRevenueGain * 12;
 
+  // Track percentage fills for continuous, solid pipe rendering across light & dark themes
+  const visitorPct = Math.min(100, Math.max(0, ((monthlyVisitors - 5000) / (250000 - 5000)) * 100));
+  const convPct = Math.min(100, Math.max(0, ((currentConversionRate - 0.5) / (6.0 - 0.5)) * 100));
+  const dealPct = Math.min(100, Math.max(0, ((averageDealValue - 100) / (5000 - 100)) * 100));
+
   // ---------------------------------------------------------------------------
   // 2. Interactive Strategy Audit Form State (Wired to Django API)
   // ---------------------------------------------------------------------------
@@ -551,7 +556,10 @@ export default function HomePage() {
                     step={5000}
                     value={monthlyVisitors}
                     onChange={(e) => setMonthlyVisitors(Number(e.target.value))}
-                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)] outline-none focus:outline-none focus-visible:outline-none"
+                    style={{
+                      background: `linear-gradient(to right, var(--accent-primary) 0%, var(--accent-primary) ${visitorPct}%, var(--surface-overlay) ${visitorPct}%, var(--surface-overlay) 100%)`,
+                    }}
+                    className="w-full h-2.5 rounded-full appearance-none cursor-pointer accent-[var(--accent-primary)] border border-[var(--border-subtle)] outline-none focus:outline-none focus-visible:outline-none"
                   />
                   <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
                     <span>5,000</span>
@@ -575,7 +583,10 @@ export default function HomePage() {
                     step={0.1}
                     value={currentConversionRate}
                     onChange={(e) => setCurrentConversionRate(Number(e.target.value))}
-                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)] outline-none focus:outline-none focus-visible:outline-none"
+                    style={{
+                      background: `linear-gradient(to right, var(--accent-primary) 0%, var(--accent-primary) ${convPct}%, var(--surface-overlay) ${convPct}%, var(--surface-overlay) 100%)`,
+                    }}
+                    className="w-full h-2.5 rounded-full appearance-none cursor-pointer accent-[var(--accent-primary)] border border-[var(--border-subtle)] outline-none focus:outline-none focus-visible:outline-none"
                   />
                   <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
                     <span>0.5% (Subpar)</span>
@@ -599,7 +610,10 @@ export default function HomePage() {
                     step={100}
                     value={averageDealValue}
                     onChange={(e) => setAverageDealValue(Number(e.target.value))}
-                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)] outline-none focus:outline-none focus-visible:outline-none"
+                    style={{
+                      background: `linear-gradient(to right, var(--accent-primary) 0%, var(--accent-primary) ${dealPct}%, var(--surface-overlay) ${dealPct}%, var(--surface-overlay) 100%)`,
+                    }}
+                    className="w-full h-2.5 rounded-full appearance-none cursor-pointer accent-[var(--accent-primary)] border border-[var(--border-subtle)] outline-none focus:outline-none focus-visible:outline-none"
                   />
                   <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
                     <span>$100</span>

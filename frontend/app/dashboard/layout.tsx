@@ -78,22 +78,22 @@ export default function DashboardLayout({
   const displayCompany = user?.profile?.company || "Vance Capital Partners";
 
   return (
-    <div className="min-h-screen bg-[var(--surface-canvas)] flex flex-col selection:bg-[var(--gold-primary)] selection:text-black">
+    <div className="min-h-screen bg-[var(--canvas)] flex flex-col selection:bg-[var(--accent-primary)] selection:text-[var(--accent-foreground)]">
       {/* Top Executive Navigation Bar */}
-      <header className="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--surface-canvas)]/85 backdrop-blur-md">
+      <header className="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--canvas)]/90 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             {/* Left: Brand + Portal Badge */}
             <div className="flex items-center gap-4">
               <Link href="/" className="flex items-center gap-2 group">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--gold-primary)] to-[var(--gold-secondary)] text-white shadow-md shadow-[var(--gold-glow)]">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--accent-primary)] to-amber-400 text-[var(--accent-foreground)] shadow-md shadow-[var(--accent-glow)] font-bold">
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-heading font-black tracking-tight text-base text-[var(--text-primary)] group-hover:text-[var(--gold-primary)] transition-colors">
+                  <span className="font-heading font-black tracking-tight text-base text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">
                     GB TECHNOLOGIES
                   </span>
-                  <span className="text-[10px] font-mono tracking-widest text-[var(--gold-primary)] uppercase">
+                  <span className="text-[10px] font-mono tracking-widest text-[var(--accent-primary)] uppercase font-semibold">
                     Modernization Studio
                   </span>
                 </div>
@@ -104,7 +104,7 @@ export default function DashboardLayout({
               <div className="hidden sm:flex items-center gap-2">
                 <Badge
                   variant="outline"
-                  className="font-mono text-[11px] py-0.5 px-2 bg-[var(--surface-raised)] border-[var(--gold-primary)]/30 text-[var(--gold-primary)] font-bold"
+                  className="font-mono text-[11px] py-0.5 px-2 bg-[var(--surface-raised)] border-[var(--accent-primary)]/30 text-[var(--accent-primary)] font-bold"
                 >
                   Client Portal
                 </Badge>
