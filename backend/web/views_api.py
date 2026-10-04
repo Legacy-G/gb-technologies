@@ -191,19 +191,23 @@ class CurrentUserAPIView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
-class ContactLeadCreateAPIView(generics.CreateAPIView):
-    """Submit enterprise consultation request / lead inquiry."""
+class ContactLeadListCreateAPIView(generics.ListCreateAPIView):
+    """List incoming leads or submit enterprise consultation request / lead inquiry."""
     permission_classes = [AllowAny]
     serializer_class = ContactLeadSerializer
-    queryset = ContactLead.objects.all()
+    queryset = ContactLead.objects.all().order_by('-created_at')
 
-    @extend_schema(summary="Submit Contact & Lead Inquiry")
+    @extend_schema(summary="List or Submit Contact & Lead Inquiries")
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         return Response({
             "message": "Thank you for reaching out. A senior technical advisor will contact you within 24 hours.",
             "data": response.data
         }, status=status.HTTP_201_CREATED)
+
+
+# Alias for backward compatibility
+ContactLeadCreateAPIView = ContactLeadListCreateAPIView
 
 
 class WebsiteSpeedAuditAPIView(APIView):

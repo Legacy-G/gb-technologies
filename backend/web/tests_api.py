@@ -118,6 +118,22 @@ class GBTechnologiesAPITestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(ContactLead.objects.filter(email="sarah@cyberdyne.com").exists())
 
+    def test_contact_lead_list(self):
+        """Test GET /api/v1/contact/leads/ lists captured leads."""
+        ContactLead.objects.create(
+            name="John Doe",
+            email="john@example.com",
+            company="Doe Enterprises",
+            service_interest="Digital Flagship",
+            message="Looking to modernize web infrastructure."
+        )
+        url = reverse('api_v1:contact_leads')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Check either paginated results or list
+        results = response.data.get('results', response.data)
+        self.assertTrue(any(lead['email'] == "john@example.com" for lead in results))
+
     def test_logout(self):
         """Test POST /api/v1/auth/logout/ clears cookies."""
         url = reverse('api_v1:auth_logout')
