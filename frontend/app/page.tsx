@@ -539,86 +539,167 @@ export default function HomePage() {
 
           <div className="max-w-4xl mx-auto glass-card rounded-2xl p-6 sm:p-10 border border-[var(--border-gold)] shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              {/* Sliders on Left */}
-              <div className="lg:col-span-7 space-y-6">
-                {/* Slider 1: Monthly Visitors */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm font-semibold">
-                    <span className="text-[var(--text-primary)]">Monthly Unique Visitors</span>
-                    <span className="text-[var(--accent-primary)] font-mono font-bold">
+              {/* Controls on Left */}
+              <div className="lg:col-span-7 space-y-5">
+                {/* Control 1: Monthly Visitors */}
+                <div className="space-y-3 rounded-xl bg-[var(--surface-raised)]/60 p-4 border border-[var(--border-subtle)]">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-semibold text-[var(--text-primary)]">Monthly Unique Visitors</span>
+                    <span className="text-[var(--accent-primary)] font-mono font-bold text-sm px-2.5 py-0.5 rounded-full bg-[var(--surface-base)] border border-[var(--border-subtle)] shadow-xs">
                       {monthlyVisitors.toLocaleString()} / mo
                     </span>
                   </div>
-                  <input
-                    type="range"
-                    min={5000}
-                    max={250000}
-                    step={5000}
-                    value={monthlyVisitors}
-                    onChange={(e) => setMonthlyVisitors(Number(e.target.value))}
-                    style={{
-                      background: `linear-gradient(to right, var(--accent-primary) 0%, var(--accent-primary) ${visitorPct}%, var(--surface-overlay) ${visitorPct}%, var(--surface-overlay) 100%)`,
-                    }}
-                    className="w-full h-2.5 rounded-full appearance-none cursor-pointer accent-[var(--accent-primary)] border border-[var(--border-subtle)] outline-none focus:outline-none focus-visible:outline-none"
-                  />
-                  <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
-                    <span>5,000</span>
-                    <span>100,000</span>
-                    <span>250,000+</span>
+
+                  {/* Stepper & Progress indicator */}
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setMonthlyVisitors((v) => Math.max(5000, v - 5000))}
+                      className="h-8 w-8 rounded-lg bg-[var(--surface-base)] hover:bg-[var(--surface-overlay)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-bold flex items-center justify-center transition-colors shadow-xs"
+                      aria-label="Decrease visitors"
+                    >
+                      -
+                    </button>
+                    <div className="flex-1 h-2.5 rounded-full bg-[var(--surface-overlay)] overflow-hidden border border-[var(--border-subtle)]">
+                      <div
+                        className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-amber-300 rounded-full transition-all duration-200"
+                        style={{ width: `${visitorPct}%` }}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setMonthlyVisitors((v) => Math.min(250000, v + 5000))}
+                      className="h-8 w-8 rounded-lg bg-[var(--surface-base)] hover:bg-[var(--surface-overlay)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-bold flex items-center justify-center transition-colors shadow-xs"
+                      aria-label="Increase visitors"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Preset Pills */}
+                  <div className="flex items-center justify-between gap-1.5 pt-1">
+                    {[10000, 25000, 50000, 100000, 250000].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setMonthlyVisitors(preset)}
+                        className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md transition-all ${
+                          monthlyVisitors === preset
+                            ? "bg-[var(--accent-primary)] text-[var(--accent-foreground)] shadow-xs"
+                            : "bg-[var(--surface-base)] text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)]"
+                        }`}
+                      >
+                        {(preset / 1000).toFixed(0)}k
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                {/* Slider 2: Current Conversion Rate */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm font-semibold">
-                    <span className="text-[var(--text-primary)]">Current Website Conversion Rate</span>
-                    <span className="text-[var(--accent-primary)] font-mono font-bold">
+                {/* Control 2: Current Conversion Rate */}
+                <div className="space-y-3 rounded-xl bg-[var(--surface-raised)]/60 p-4 border border-[var(--border-subtle)]">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-semibold text-[var(--text-primary)]">Current Conversion Rate</span>
+                    <span className="text-[var(--accent-primary)] font-mono font-bold text-sm px-2.5 py-0.5 rounded-full bg-[var(--surface-base)] border border-[var(--border-subtle)] shadow-xs">
                       {currentConversionRate.toFixed(1)}%
                     </span>
                   </div>
-                  <input
-                    type="range"
-                    min={0.5}
-                    max={6.0}
-                    step={0.1}
-                    value={currentConversionRate}
-                    onChange={(e) => setCurrentConversionRate(Number(e.target.value))}
-                    style={{
-                      background: `linear-gradient(to right, var(--accent-primary) 0%, var(--accent-primary) ${convPct}%, var(--surface-overlay) ${convPct}%, var(--surface-overlay) 100%)`,
-                    }}
-                    className="w-full h-2.5 rounded-full appearance-none cursor-pointer accent-[var(--accent-primary)] border border-[var(--border-subtle)] outline-none focus:outline-none focus-visible:outline-none"
-                  />
-                  <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
-                    <span>0.5% (Subpar)</span>
-                    <span>2.0% (Average)</span>
-                    <span>6.0% (High)</span>
+
+                  {/* Stepper & Progress indicator */}
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentConversionRate((v) => Math.max(0.5, Number((v - 0.1).toFixed(1))))}
+                      className="h-8 w-8 rounded-lg bg-[var(--surface-base)] hover:bg-[var(--surface-overlay)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-bold flex items-center justify-center transition-colors shadow-xs"
+                      aria-label="Decrease conversion rate"
+                    >
+                      -
+                    </button>
+                    <div className="flex-1 h-2.5 rounded-full bg-[var(--surface-overlay)] overflow-hidden border border-[var(--border-subtle)]">
+                      <div
+                        className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-amber-300 rounded-full transition-all duration-200"
+                        style={{ width: `${convPct}%` }}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentConversionRate((v) => Math.min(6.0, Number((v + 0.1).toFixed(1))))}
+                      className="h-8 w-8 rounded-lg bg-[var(--surface-base)] hover:bg-[var(--surface-overlay)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-bold flex items-center justify-center transition-colors shadow-xs"
+                      aria-label="Increase conversion rate"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Preset Pills */}
+                  <div className="flex items-center justify-between gap-1.5 pt-1">
+                    {[1.0, 1.8, 2.5, 3.5, 5.0].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setCurrentConversionRate(preset)}
+                        className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md transition-all ${
+                          Math.abs(currentConversionRate - preset) < 0.05
+                            ? "bg-[var(--accent-primary)] text-[var(--accent-foreground)] shadow-xs"
+                            : "bg-[var(--surface-base)] text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)]"
+                        }`}
+                      >
+                        {preset.toFixed(1)}%
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                {/* Slider 3: Average Order / Customer Value */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm font-semibold">
-                    <span className="text-[var(--text-primary)]">Average Deal / Customer Value</span>
-                    <span className="text-[var(--accent-primary)] font-mono font-bold">
+                {/* Control 3: Average Order / Customer Value */}
+                <div className="space-y-3 rounded-xl bg-[var(--surface-raised)]/60 p-4 border border-[var(--border-subtle)]">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-semibold text-[var(--text-primary)]">Average Deal / Customer Value</span>
+                    <span className="text-[var(--accent-primary)] font-mono font-bold text-sm px-2.5 py-0.5 rounded-full bg-[var(--surface-base)] border border-[var(--border-subtle)] shadow-xs">
                       ${averageDealValue.toLocaleString()}
                     </span>
                   </div>
-                  <input
-                    type="range"
-                    min={100}
-                    max={5000}
-                    step={100}
-                    value={averageDealValue}
-                    onChange={(e) => setAverageDealValue(Number(e.target.value))}
-                    style={{
-                      background: `linear-gradient(to right, var(--accent-primary) 0%, var(--accent-primary) ${dealPct}%, var(--surface-overlay) ${dealPct}%, var(--surface-overlay) 100%)`,
-                    }}
-                    className="w-full h-2.5 rounded-full appearance-none cursor-pointer accent-[var(--accent-primary)] border border-[var(--border-subtle)] outline-none focus:outline-none focus-visible:outline-none"
-                  />
-                  <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
-                    <span>$100</span>
-                    <span>$2,500</span>
-                    <span>$5,000+</span>
+
+                  {/* Stepper & Progress indicator */}
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setAverageDealValue((v) => Math.max(100, v - 100))}
+                      className="h-8 w-8 rounded-lg bg-[var(--surface-base)] hover:bg-[var(--surface-overlay)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-bold flex items-center justify-center transition-colors shadow-xs"
+                      aria-label="Decrease deal value"
+                    >
+                      -
+                    </button>
+                    <div className="flex-1 h-2.5 rounded-full bg-[var(--surface-overlay)] overflow-hidden border border-[var(--border-subtle)]">
+                      <div
+                        className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-amber-300 rounded-full transition-all duration-200"
+                        style={{ width: `${dealPct}%` }}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAverageDealValue((v) => Math.min(5000, v + 100))}
+                      className="h-8 w-8 rounded-lg bg-[var(--surface-base)] hover:bg-[var(--surface-overlay)] border border-[var(--border-subtle)] text-[var(--text-primary)] font-bold flex items-center justify-center transition-colors shadow-xs"
+                      aria-label="Increase deal value"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Preset Pills */}
+                  <div className="flex items-center justify-between gap-1.5 pt-1">
+                    {[250, 500, 1000, 2500, 5000].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setAverageDealValue(preset)}
+                        className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md transition-all ${
+                          averageDealValue === preset
+                            ? "bg-[var(--accent-primary)] text-[var(--accent-foreground)] shadow-xs"
+                            : "bg-[var(--surface-base)] text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)]"
+                        }`}
+                      >
+                        ${preset >= 1000 ? `${(preset / 1000).toFixed(0)}k` : preset}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>

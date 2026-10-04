@@ -184,7 +184,7 @@ export function LeadsFeedWidget() {
       </div>
 
       {/* Leads Feed List */}
-      <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+      <div className="space-y-3 max-h-[520px] overflow-y-auto scrollbar-none">
         {loading && leads.length === 0 ? (
           <div className="py-12 text-center text-xs text-[var(--text-muted)]">
             Loading real-time inquiries...

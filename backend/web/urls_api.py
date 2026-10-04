@@ -12,6 +12,7 @@ from .views_api import (
     CurrentUserAPIView,
     ContactLeadCreateAPIView,
     WebsiteSpeedAuditAPIView,
+    TelemetryMetricsAPIView,
 )
 
 app_name = 'api_v1'
@@ -19,6 +20,9 @@ app_name = 'api_v1'
 urlpatterns = [
     # Health probe
     path('health/', HealthCheckView.as_view(), name='health'),
+
+    # Real-Time Telemetry & Monitoring Graphs
+    path('telemetry/', TelemetryMetricsAPIView.as_view(), name='telemetry'),
 
     # Authentication
     path('auth/login/', CookieTokenObtainPairView.as_view(), name='auth_login'),

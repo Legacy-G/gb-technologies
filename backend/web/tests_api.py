@@ -171,3 +171,18 @@ class GBTechnologiesAPITestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['url'], "https://acmecorp.com")
         self.assertTrue(WebsiteSpeedAudit.objects.filter(url="https://acmecorp.com").exists())
+
+    def test_telemetry_endpoint(self):
+        """Test GET /api/v1/telemetry/ returns edge telemetry metrics."""
+        url = reverse('api_v1:telemetry')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['status'], 'online')
+        self.assertIn('summary', response.data)
+        self.assertIn('regions', response.data)
+        self.assertIn('ttfb_timeline', response.data)
+        self.assertEqual(len(response.data['ttfb_timeline']), 5)
+        self.assertIn('projects_timeline', response.data)
+        self.assertIn('cluster_nodes', response.data)
+        self.assertEqual(len(response.data['cluster_nodes']), 32)
+

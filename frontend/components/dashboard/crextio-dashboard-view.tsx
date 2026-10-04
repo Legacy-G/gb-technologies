@@ -551,7 +551,7 @@ export function CrextioDashboardView({ onSwitchToMonitoring }: CrextioDashboardP
             </div>
 
             {/* Checklist Items */}
-            <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+            <div className="space-y-2.5">
               {tasks.map((task) => (
                 <button
                   key={task.id}
