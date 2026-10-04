@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* 60% Canvas & Surfaces (Light) */
+    --canvas: oklch(0.985 0.005 240);
+    --surface-base: oklch(1.000 0.000 0);
+    --surface-raised: oklch(0.970 0.008 240);
+    --surface-overlay: oklch(0.940 0.012 240);
+
+    /* Borders (Light) */
+    --border-subtle: oklch(0.880 0.015 240);
+    --border-strong: oklch(0.720 0.025 240);
+
+    /* 30% Typography & Hierarchies (Light) */
+    --text-primary: oklch(0.180 0.025 240);
+    --text-secondary: oklch(0.420 0.030 240);
+    --text-muted: oklch(0.580 0.025 240);
+
+    /* 10% Accents & Interactive (Electric Cyan - Contrast Calibrated) */
+    --accent-primary: oklch(0.520 0.170 195);
+    --accent-hover: oklch(0.460 0.180 195);
+    --accent-foreground: oklch(0.985 0.005 240);
+    --accent-glow: oklch(0.520 0.170 195 / 0.18);
+
+    /* Status Semantics */
+    --status-success: oklch(0.52 0.15 145);
+    --status-warning: oklch(0.58 0.16 75);
+    --status-destructive: oklch(0.52 0.20 25);
+    --ring: oklch(0.520 0.170 195);
+
+    /* Radiuses */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+  }
+
+  .dark {
+    /* 60% Canvas & Surfaces (Dark - Obsidian Base) */
+    --canvas: oklch(0.130 0.015 240);
+    --surface-base: oklch(0.165 0.018 240);
+    --surface-raised: oklch(0.205 0.022 240);
+    --surface-overlay: oklch(0.250 0.025 240);
+
+    /* Borders (Dark) */
+    --border-subtle: oklch(0.260 0.020 240);
+    --border-strong: oklch(0.380 0.028 240);
+
+    /* 30% Typography & Hierarchies (Dark) */
+    --text-primary: oklch(0.960 0.008 240);
+    --text-secondary: oklch(0.760 0.018 240);
+    --text-muted: oklch(0.560 0.020 240);
+
+    /* 10% Accents & Interactive (Electric Cyan Glow) */
+    --accent-primary: oklch(0.720 0.190 195);
+    --accent-hover: oklch(0.780 0.180 195);
+    --accent-foreground: oklch(0.100 0.020 240);
+    --accent-glow: oklch(0.720 0.190 195 / 0.25);
+
+    /* Status Semantics */
+    --status-success: oklch(0.68 0.16 145);
+    --status-warning: oklch(0.74 0.17 75);
+    --status-destructive: oklch(0.64 0.22 25);
+    --ring: oklch(0.720 0.190 195);
+  }
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface-base);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-overlay: var(--surface-overlay);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-accent: var(--accent-primary);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-glow: var(--accent-glow);
+
+  --color-destructive: var(--status-destructive);
+  --color-success: var(--status-success);
+  --color-warning: var(--status-warning);
+  --color-ring: var(--ring);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+}
+
+body {
+  background-color: var(--canvas);
+  color: var(--text-primary);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fluid Typography Utilities */
+.text-fluid-hero {
+  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.text-fluid-h1 {
+  font-size: clamp(2.0rem, 3.5vw + 0.8rem, 3.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.text-fluid-h2 {
+  font-size: clamp(1.5rem, 2.5vw + 0.6rem, 2.25rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.text-fluid-body {
+  font-size: clamp(0.9375rem, 0.5vw + 0.8rem, 1.0625rem);
+  line-height: 1.6;
+}
+
+/* Glassmorphism Surface Utility */
+.glass-nav {
+  background-color: oklch(from var(--canvas) l c h / 0.82);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.glass-card {
+  background-color: oklch(from var(--surface-base) l c h / 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+}
