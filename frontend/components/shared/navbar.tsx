@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { Cpu, Menu, X, ArrowRight } from "lucide-react";
+import { Layers, Menu, X, ArrowRight } from "lucide-react";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -13,9 +13,12 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full glass-nav transition-all duration-200">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] rounded-md">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] rounded-md"
+        >
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-primary)] text-[var(--accent-foreground)] shadow-md">
-            <Cpu className="h-5 w-5" />
+            <Layers className="h-5 w-5" />
           </div>
           <span className="text-lg font-bold tracking-tight text-[var(--text-primary)]">
             GB <span className="text-[var(--accent-primary)]">Technologies</span>
@@ -24,17 +27,17 @@ export function Navbar() {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--text-secondary)]">
-          <Link href="/#solutions" className="transition-colors hover:text-[var(--text-primary)]">
-            Solutions
+          <Link href="/#services" className="transition-colors hover:text-[var(--text-primary)]">
+            Services
           </Link>
-          <Link href="/#capabilities" className="transition-colors hover:text-[var(--text-primary)]">
-            Capabilities
+          <Link href="/#modernization" className="transition-colors hover:text-[var(--text-primary)]">
+            Modernization
           </Link>
-          <Link href="/#metrics" className="transition-colors hover:text-[var(--text-primary)]">
-            Metrics & SLA
+          <Link href="/#impact" className="transition-colors hover:text-[var(--text-primary)]">
+            Enterprise Impact
           </Link>
-          <Link href="/#contact" className="transition-colors hover:text-[var(--text-primary)]">
-            Contact
+          <Link href="/#methodology" className="transition-colors hover:text-[var(--text-primary)]">
+            Methodology
           </Link>
         </nav>
 
@@ -46,9 +49,9 @@ export function Navbar() {
               Client Portal
             </Button>
           </Link>
-          <Link href="/#contact">
+          <Link href="/#briefing">
             <Button variant="glow" size="sm" className="gap-1.5">
-              <span>Book Technical Audit</span>
+              <span>Executive Briefing</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -73,32 +76,32 @@ export function Navbar() {
         <div className="md:hidden border-b border-[var(--border-subtle)] bg-[var(--surface-base)] px-4 pt-2 pb-6 space-y-3">
           <div className="flex flex-col space-y-2 pt-2 pb-3">
             <Link
-              href="/#solutions"
+              href="/#services"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Solutions
+              Services
             </Link>
             <Link
-              href="/#capabilities"
+              href="/#modernization"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Capabilities
+              Modernization
             </Link>
             <Link
-              href="/#metrics"
+              href="/#impact"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Metrics & SLA
+              Enterprise Impact
             </Link>
             <Link
-              href="/#contact"
+              href="/#methodology"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Contact
+              Methodology
             </Link>
           </div>
           <div className="pt-2 flex flex-col gap-2">
@@ -107,9 +110,9 @@ export function Navbar() {
                 Client Portal
               </Button>
             </Link>
-            <Link href="/#contact" onClick={() => setMobileMenuOpen(false)}>
+            <Link href="/#briefing" onClick={() => setMobileMenuOpen(false)}>
               <Button variant="glow" className="w-full">
-                Book Technical Audit
+                Schedule Executive Briefing
               </Button>
             </Link>
           </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -9,24 +8,25 @@ import { Badge } from "@/components/ui/badge";
 import { apiClient } from "@/lib/api-client";
 import {
   ShieldCheck,
-  Cloud,
   Layers,
-  Activity,
+  Code2,
+  Users2,
+  Workflow,
   ArrowRight,
   CheckCircle2,
-  Lock,
-  Cpu,
-  Zap,
-  Globe2,
+  Sparkles,
+  BarChart3,
+  Award,
+  Terminal,
 } from "lucide-react";
 
 export default function HomePage() {
-  // Contact Form State
+  // Executive Briefing Form State
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
     company: "",
-    service_interest: "Cloud Infrastructure",
+    service_interest: "Legacy Modernization",
     message: "",
   });
   const [formStatus, setFormStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle");
@@ -44,7 +44,7 @@ export default function HomePage() {
         name: "",
         email: "",
         company: "",
-        service_interest: "Cloud Infrastructure",
+        service_interest: "Legacy Modernization",
         message: "",
       });
     } catch (err: unknown) {
@@ -63,41 +63,41 @@ export default function HomePage() {
       {/* 1. HERO SECTION */}
       {/* ========================================================================= */}
       <section className="relative overflow-hidden pt-20 pb-28 md:pt-32 md:pb-40 border-b border-[var(--border-subtle)]">
-        {/* Subtle Ambient Radial Glow */}
+        {/* Subtle Ambient Radial Glow (Royal Indigo) */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full bg-[var(--accent-glow)] blur-[120px] opacity-40"
+          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[720px] h-[520px] rounded-full bg-[var(--accent-glow)] blur-[140px] opacity-40"
         />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto space-y-8">
             {/* Announcement Badge */}
-            <Badge variant="accent" className="gap-2 py-1.5 px-3.5 text-xs font-medium">
-              <span className="flex h-2 w-2 rounded-full bg-[var(--accent-primary)] animate-pulse" />
-              <span>Announcing GB Enterprise Platform 3.0</span>
+            <Badge variant="accent" className="gap-2 py-1.5 px-4 text-xs font-semibold">
+              <Sparkles className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+              <span>Enterprise Digital Transformation & Custom Engineering</span>
             </Badge>
 
             {/* Display H1 Typography */}
             <h1 className="text-fluid-hero font-extrabold text-[var(--text-primary)]">
-              Architecting Resilient Cloud & High-Velocity Digital Systems
+              Transforming Complex Enterprise Systems into High-Performance Digital Engines
             </h1>
 
             {/* Lead Narrative */}
             <p className="text-fluid-body text-[var(--text-secondary)] max-w-2xl leading-relaxed">
-              We design, build, and optimize mission-critical cloud infrastructure, zero-trust security mesh, and decoupled full-stack platforms engineered for 99.999% uptime.
+              We partner with forward-thinking enterprise leaders to engineer bespoke software, safely decouple legacy monolithic architectures, and deploy dedicated senior engineering pods with predictable milestone delivery.
             </p>
 
             {/* Hero Action CTA Group */}
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
-              <a href="#contact">
+              <a href="#briefing">
                 <Button variant="glow" size="lg" className="w-full sm:w-auto gap-2">
-                  <span>Schedule Technical Audit</span>
+                  <span>Schedule Executive Briefing</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
-              <a href="#solutions">
+              <a href="#services">
                 <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                  Explore Capabilities
+                  Explore Engineering Practices
                 </Button>
               </a>
             </div>
@@ -106,19 +106,19 @@ export default function HomePage() {
             <div className="pt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-xs text-[var(--text-muted)] w-full max-w-3xl border-t border-[var(--border-subtle)]">
               <div className="flex items-center justify-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-[var(--accent-primary)]" />
-                <span>SOC 2 Type II Certified</span>
+                <span>ISO 27001 Certified</span>
               </div>
               <div className="flex items-center justify-center gap-2">
-                <Activity className="h-4 w-4 text-[var(--status-success)]" />
-                <span>99.999% SLA Uptime</span>
+                <Award className="h-4 w-4 text-[var(--status-success)]" />
+                <span>99.4% On-Time Delivery</span>
               </div>
               <div className="flex items-center justify-center gap-2">
-                <Zap className="h-4 w-4 text-amber-500" />
-                <span>Sub-50ms Global Edge</span>
+                <BarChart3 className="h-4 w-4 text-indigo-500" />
+                <span>$2.4B+ Value Delivered</span>
               </div>
               <div className="flex items-center justify-center gap-2">
-                <Globe2 className="h-4 w-4 text-blue-500" />
-                <span>Multi-Cloud Scalability</span>
+                <Users2 className="h-4 w-4 text-blue-500" />
+                <span>Senior Staff Engineers</span>
               </div>
             </div>
           </div>
@@ -126,41 +126,41 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 2. QUANTIFIABLE METRICS RIBBON */}
+      {/* 2. QUANTIFIABLE ENTERPRISE IMPACT RIBBON */}
       {/* ========================================================================= */}
-      <section id="metrics" className="py-12 bg-[var(--surface-base)] border-b border-[var(--border-subtle)]">
+      <section id="impact" className="py-12 bg-[var(--surface-base)] border-b border-[var(--border-subtle)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             <div className="space-y-1">
               <div className="text-3xl lg:text-4xl font-extrabold text-[var(--accent-primary)]">
-                99.999%
+                $2.4B+
               </div>
               <div className="text-sm font-medium text-[var(--text-secondary)]">
-                Enterprise SLA Availability
+                Enterprise Transaction Volume
               </div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl lg:text-4xl font-extrabold text-[var(--text-primary)]">
-                -42%
+                -65%
               </div>
               <div className="text-sm font-medium text-[var(--text-secondary)]">
-                Average Cloud Cost Reduction
+                Technical Debt & Defect Reduction
               </div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl lg:text-4xl font-extrabold text-[var(--accent-primary)]">
-                10x
+                4.8x
               </div>
               <div className="text-sm font-medium text-[var(--text-secondary)]">
-                Deployment Frequency Velocity
+                Accelerated Feature Velocity
               </div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl lg:text-4xl font-extrabold text-[var(--text-primary)]">
-                &lt; 50ms
+                100%
               </div>
               <div className="text-sm font-medium text-[var(--text-secondary)]">
-                Median Global API Latency
+                Enterprise Client Retention
               </div>
             </div>
           </div>
@@ -168,116 +168,120 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. CAPABILITIES BENTO GRID */}
+      {/* 3. CORE ENGINEERING PRACTICES BENTO GRID */}
       {/* ========================================================================= */}
-      <section id="capabilities" className="py-24 bg-[var(--canvas)] border-b border-[var(--border-subtle)]">
+      <section id="services" className="py-24 bg-[var(--canvas)] border-b border-[var(--border-subtle)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <Badge variant="default">Enterprise Capabilities</Badge>
+            <Badge variant="default">Core Engineering Practices</Badge>
             <h2 className="text-fluid-h2 font-bold text-[var(--text-primary)]">
-              Engineered for Scale, Security, and Predictability
+              Transforming Architecture into Strategic Advantage
             </h2>
             <p className="text-sm text-[var(--text-secondary)]">
-              Explore how our core engineering practices accelerate product delivery while enforcing ironclad resilience.
+              From de-risking legacy migrations to building high-concurrency custom platforms, our practices ensure institutional excellence at every phase.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Bento Card 1: Cloud Architecture */}
+            {/* Bento Card 1: Legacy Monolith Modernization */}
             <Card className="md:col-span-2 glass-card hover:border-[var(--accent-primary)]/40 transition-all">
               <CardHeader>
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] mb-2">
-                  <Cloud className="h-5 w-5" />
+                  <Workflow className="h-5 w-5" />
                 </div>
-                <CardTitle>Autonomous Multi-Cloud Infrastructure</CardTitle>
+                <CardTitle>Legacy Monolith Modernization & Decoupling</CardTitle>
                 <CardDescription>
-                  Automate provisioning with Terraform, Kubernetes orchestration, and serverless compute meshes that dynamically auto-scale with traffic spikes.
+                  De-risk high-stakes system overhauls using the Strangler Fig pattern. We extract bounded contexts into headless API services and modern edge frontends with zero operational downtime.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="rounded-lg bg-[var(--surface-raised)] p-4 text-xs font-mono text-[var(--text-secondary)] space-y-1 border border-[var(--border-subtle)]">
-                  <div className="text-emerald-500 font-semibold">$ terraform apply -auto-approve</div>
-                  <div>+ cluster.eks.us-east-1 (Nodes: 12, AutoScaler: Active)</div>
-                  <div>+ cdn.edge_routes (Cache hit ratio: 98.4%)</div>
-                  <div className="text-[var(--text-muted)]">Apply complete! Resources: 24 added, 0 destroyed.</div>
+                <div className="rounded-lg bg-[var(--surface-raised)] p-4 text-xs font-mono text-[var(--text-secondary)] space-y-1.5 border border-[var(--border-subtle)]">
+                  <div className="flex items-center gap-2 text-indigo-400 font-semibold">
+                    <Terminal className="h-3.5 w-3.5" />
+                    <span>strangler-proxy: routing audit matrix</span>
+                  </div>
+                  <div>[PROXY] /api/v1/auth/*        -&gt; [Headless Django REST Service: Healthy]</div>
+                  <div>[PROXY] /dashboard/*          -&gt; [Next.js App Router (React 19): Healthy]</div>
+                  <div>[FALLBACK] /legacy/billing/*   -&gt; [Original Monolith: Target Cutover Sprint 3]</div>
+                  <div className="text-emerald-500 font-medium">✓ Zero session drift detected. 100% traffic parity maintained.</div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Bento Card 2: Zero-Trust Security */}
+            {/* Bento Card 2: Custom Enterprise Software */}
             <Card className="glass-card hover:border-[var(--accent-primary)]/40 transition-all">
               <CardHeader>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500 mb-2">
-                  <Lock className="h-5 w-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-500 mb-2">
+                  <Code2 className="h-5 w-5" />
                 </div>
-                <CardTitle>Zero-Trust Security Mesh</CardTitle>
+                <CardTitle>Bespoke Full-Stack Engineering</CardTitle>
                 <CardDescription>
-                  Continuous authentication, micro-segmentation, and end-to-end cryptographic enforcement across all services.
+                  Custom mission-critical software built with strict TypeScript contracts, domain-driven design, and resilient state synchronization.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2 text-xs text-[var(--text-secondary)]">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                  <span>mTLS Service Communication</span>
+                  <CheckCircle2 className="h-3.5 w-3.5 text-indigo-500" />
+                  <span>Type-Safe Next.js & DRF Stacks</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                  <span>Automated Key Rotation (24h)</span>
+                  <CheckCircle2 className="h-3.5 w-3.5 text-indigo-500" />
+                  <span>Micro-Frontends & Design Tokens</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                  <span>SIEM Real-time Threat Analysis</span>
+                  <CheckCircle2 className="h-3.5 w-3.5 text-indigo-500" />
+                  <span>Automated CI/CD Quality Gates</span>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Bento Card 3: Microservices */}
+            {/* Bento Card 3: Architecture & DDD */}
             <Card className="glass-card hover:border-[var(--accent-primary)]/40 transition-all">
               <CardHeader>
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500 mb-2">
                   <Layers className="h-5 w-5" />
                 </div>
-                <CardTitle>Decoupled Microservices</CardTitle>
+                <CardTitle>Domain-Driven Architecture</CardTitle>
                 <CardDescription>
-                  Isolate business domains into fast, maintainable services powered by event buses and asynchronous queues.
+                  Establish clear bounded contexts, event-driven domain models, and long-term architectural blueprints that scale with organizational growth.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2 text-xs text-[var(--text-secondary)]">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-blue-500" />
-                  <span>Kafka & RabbitMQ Pipelines</span>
+                  <span>Event Storming & Domain Modeling</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-blue-500" />
-                  <span>GraphQL & REST API Gateways</span>
+                  <span>Technical Due Diligence Audits</span>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Bento Card 4: Observability */}
+            {/* Bento Card 4: Dedicated Engineering Pods */}
             <Card className="md:col-span-2 glass-card hover:border-[var(--accent-primary)]/40 transition-all">
               <CardHeader>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500 mb-2">
-                  <Cpu className="h-5 w-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 mb-2">
+                  <Users2 className="h-5 w-5" />
                 </div>
-                <CardTitle>Intelligent Telemetry & Instant Observability</CardTitle>
+                <CardTitle>Dedicated Senior Engineering Pods</CardTitle>
                 <CardDescription>
-                  Deep tracing across every request lifecycle with automated incident detection and predictive anomaly alerts.
+                  Autonomous, self-directed delivery teams composed of Principal Architects, Senior Full-Stack Engineers, and QA specialists who integrate directly into your engineering workflows.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 gap-4 pt-2 text-center">
                   <div className="rounded-lg bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
-                    <div className="text-lg font-bold text-[var(--text-primary)]">0.02ms</div>
-                    <div className="text-[11px] text-[var(--text-muted)]">DNS Resolution</div>
+                    <div className="text-lg font-bold text-[var(--text-primary)]">Sprint-Based</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">Predictable Velocity</div>
                   </div>
                   <div className="rounded-lg bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
-                    <div className="text-lg font-bold text-emerald-500">100%</div>
-                    <div className="text-[11px] text-[var(--text-muted)]">Health Checks</div>
+                    <div className="text-lg font-bold text-emerald-500">Zero Onboarding Lag</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">Day 1 Production Ready</div>
                   </div>
                   <div className="rounded-lg bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
-                    <div className="text-lg font-bold text-[var(--accent-primary)]">24 / 7</div>
-                    <div className="text-[11px] text-[var(--text-muted)]">On-call SRE Coverage</div>
+                    <div className="text-lg font-bold text-[var(--accent-primary)]">Staff+ Only</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">Elite Engineering Talent</div>
                   </div>
                 </div>
               </CardContent>
@@ -287,38 +291,38 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. INTERACTIVE AUDIT BOOKING & CONTACT */}
+      {/* 4. INTERACTIVE EXECUTIVE BRIEFING & CONSULTATION */}
       {/* ========================================================================= */}
-      <section id="contact" className="py-24 bg-[var(--surface-base)]">
+      <section id="briefing" className="py-24 bg-[var(--surface-base)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-5 space-y-6">
-              <Badge variant="accent">Technical Advisory</Badge>
+              <Badge variant="accent">Executive Advisory</Badge>
               <h2 className="text-fluid-h2 font-bold text-[var(--text-primary)]">
-                Ready to Modernize Your Enterprise Architecture?
+                Schedule an Architectural Discovery Session
               </h2>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                Connect directly with our Principal Architects. We will conduct an architectural review of your existing stack, diagnose latency bottlenecks, and deliver an actionable modernization roadmap.
+                Connect directly with our Principal Architects and Practice Leads. We will review your modernization objectives, evaluate legacy technical debt, and present a risk-mitigated technical roadmap tailored to your business timeline.
               </p>
               <div className="space-y-3 pt-2 text-sm text-[var(--text-secondary)]">
                 <div className="flex items-center gap-3">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span>Confidentiality guaranteed via enterprise NDA</span>
+                  <span>Strict Enterprise NDA prior to any technical disclosure</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span>Zero-obligation technical assessment report</span>
+                  <span>Tailored Technical Architecture Scoping Document</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span>Direct response within 24 business hours</span>
+                  <span>Executive response within 24 business hours</span>
                 </div>
               </div>
             </div>
@@ -327,9 +331,9 @@ export default function HomePage() {
             <div className="lg:col-span-7">
               <Card className="glass-card shadow-lg p-2 sm:p-4">
                 <CardHeader>
-                  <CardTitle>Schedule an Architectural Audit</CardTitle>
+                  <CardTitle>Request Executive Briefing</CardTitle>
                   <CardDescription>
-                    Provide your system parameters below to connect with our technical leadership team.
+                    Provide your initiative parameters below to connect directly with our practice leadership.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -337,10 +341,10 @@ export default function HomePage() {
                     <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-8 text-center space-y-3">
                       <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
                       <h3 className="text-lg font-bold text-[var(--text-primary)]">
-                        Inquiry Received
+                        Briefing Request Received
                       </h3>
                       <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
-                        Thank you for reaching out. A Senior Technical Advisor has been assigned to your request and will contact you within 24 business hours.
+                        Thank you for contacting GB Technologies. A Principal Consultant has been assigned to your inquiry and will reach out with our standard bilateral NDA and availability within 24 business hours.
                       </p>
                       <Button
                         variant="outline"
@@ -348,7 +352,7 @@ export default function HomePage() {
                         onClick={() => setFormStatus("idle")}
                         className="mt-4"
                       >
-                        Submit Another Inquiry
+                        Submit Another Request
                       </Button>
                     </div>
                   ) : (
@@ -362,7 +366,7 @@ export default function HomePage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Input
                           label="Full Name"
-                          placeholder="e.g. Dr. Alan Turing"
+                          placeholder="e.g. Elena Rostova"
                           required
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -370,7 +374,7 @@ export default function HomePage() {
                         <Input
                           label="Corporate Email"
                           type="email"
-                          placeholder="alan@organization.com"
+                          placeholder="elena@enterprise.com"
                           required
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -379,36 +383,36 @@ export default function HomePage() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Input
-                          label="Organization / Company"
-                          placeholder="Enterprise Ltd."
+                          label="Enterprise / Organization"
+                          placeholder="Global Technologies Corp."
                           value={formData.company}
                           onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                         />
                         <div className="space-y-1.5">
                           <label className="block text-xs font-medium text-[var(--text-secondary)] uppercase tracking-wider">
-                            Primary Focus Area
+                            Primary Engagement Area
                           </label>
                           <select
                             value={formData.service_interest}
                             onChange={(e) => setFormData({ ...formData, service_interest: e.target.value })}
                             className="flex h-10 w-full rounded-md border border-[var(--border-subtle)] bg-[var(--surface-base)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--ring)] focus:ring-1 focus:ring-[var(--ring)]"
                           >
-                            <option value="Cloud Infrastructure">Cloud Infrastructure & Migration</option>
-                            <option value="Zero-Trust Cybersecurity">Zero-Trust Cybersecurity</option>
-                            <option value="Full-Stack Modernization">Full-Stack Decoupled Modernization</option>
-                            <option value="DevOps & Reliability">DevOps & 24/7 SRE Observability</option>
+                            <option value="Legacy Modernization">Legacy System Modernization & Decoupling</option>
+                            <option value="Bespoke Software Development">Bespoke Full-Stack Software Engineering</option>
+                            <option value="Dedicated Engineering Pod">Dedicated Senior Engineering Pod</option>
+                            <option value="Enterprise Architecture Advisory">Enterprise Architecture & DDD Advisory</option>
                           </select>
                         </div>
                       </div>
 
                       <div className="space-y-1.5">
                         <label className="block text-xs font-medium text-[var(--text-secondary)] uppercase tracking-wider">
-                          Project Context / Infrastructure Notes
+                          Initiative Context & Timeline
                         </label>
                         <textarea
                           rows={4}
                           required
-                          placeholder="Briefly describe your current architecture, cloud provider, and primary technical challenges..."
+                          placeholder="Briefly describe your existing application stack, technical debt bottlenecks, target outcomes, or planned delivery milestones..."
                           value={formData.message}
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                           className="flex w-full rounded-md border border-[var(--border-subtle)] bg-[var(--surface-base)] p-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--ring)] focus:ring-1 focus:ring-[var(--ring)]"
@@ -422,7 +426,7 @@ export default function HomePage() {
                         className="w-full gap-2"
                         isLoading={formStatus === "loading"}
                       >
-                        <span>Submit Architecture Scoping Request</span>
+                        <span>Schedule Executive Briefing</span>
                         <ArrowRight className="h-4 w-4" />
                       </Button>
                     </form>
