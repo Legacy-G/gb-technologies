@@ -7,26 +7,49 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { apiClient } from "@/lib/api-client";
 import {
+  Sparkles,
+  Zap,
+  TrendingUp,
   ShieldCheck,
-  Layers,
-  Code2,
-  Users2,
-  Workflow,
   ArrowRight,
   CheckCircle2,
-  Sparkles,
-  BarChart3,
-  Award,
-  Terminal,
+  XCircle,
+  Gem,
+  LayoutTemplate,
+  Command,
+  Globe,
+  Sliders,
+  DollarSign,
+  Gauge,
+  Layers,
 } from "lucide-react";
 
 export default function HomePage() {
-  // Executive Briefing Form State
+  // ---------------------------------------------------------------------------
+  // 1. Interactive Revenue & Conversion Calculator State
+  // ---------------------------------------------------------------------------
+  const [monthlyVisitors, setMonthlyVisitors] = React.useState(50000);
+  const [currentConversionRate, setCurrentConversionRate] = React.useState(2.0); // 2.0%
+  const [averageDealValue, setAverageDealValue] = React.useState(500); // $500
+
+  // Calculation: +45% average conversion lift with a sub-second decoupled flagship
+  const currentMonthlyConversions = (monthlyVisitors * currentConversionRate) / 100;
+  const currentMonthlyRevenue = currentMonthlyConversions * averageDealValue;
+
+  const projectedConversionRate = currentConversionRate * 1.45; // 45% lift
+  const projectedMonthlyConversions = (monthlyVisitors * projectedConversionRate) / 100;
+  const projectedMonthlyRevenue = projectedMonthlyConversions * averageDealValue;
+  const monthlyRevenueGain = projectedMonthlyRevenue - currentMonthlyRevenue;
+  const annualRevenueGain = monthlyRevenueGain * 12;
+
+  // ---------------------------------------------------------------------------
+  // 2. Interactive Strategy Audit Form State (Wired to Django API)
+  // ---------------------------------------------------------------------------
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
     company: "",
-    service_interest: "Legacy Modernization",
+    service_interest: "Digital Flagship",
     message: "",
   });
   const [formStatus, setFormStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle");
@@ -44,7 +67,7 @@ export default function HomePage() {
         name: "",
         email: "",
         company: "",
-        service_interest: "Legacy Modernization",
+        service_interest: "Digital Flagship",
         message: "",
       });
     } catch (err: unknown) {
@@ -60,65 +83,96 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION */}
+      {/* 1. HERO SECTION (Warm Champagne Ivory Atmosphere with Flowing Gold Waves) */}
       {/* ========================================================================= */}
-      <section className="relative overflow-hidden pt-20 pb-28 md:pt-32 md:pb-40 border-b border-[var(--border-subtle)]">
-        {/* Subtle Ambient Radial Glow (Royal Indigo) */}
+      <section className="relative overflow-hidden pt-16 pb-24 md:pt-28 md:pb-36 border-b border-[var(--border-subtle)]">
+        {/* Soft Champagne & Warm Gold Ambient Radial Atmosphere */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[720px] h-[520px] rounded-full bg-[var(--accent-glow)] blur-[140px] opacity-40"
+          className="pointer-events-none absolute -top-48 left-1/2 -translate-x-1/2 w-[850px] h-[550px] rounded-full bg-[var(--accent-glow)] blur-[150px] opacity-60"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full bg-amber-500/10 blur-[120px]"
         />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto space-y-8">
-            {/* Announcement Badge */}
-            <Badge variant="accent" className="gap-2 py-1.5 px-4 text-xs font-semibold">
+            {/* Golden Announcement Pill */}
+            <Badge variant="accent" className="gap-2 py-1.5 px-4 text-xs font-semibold shadow-xs">
               <Sparkles className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-              <span>Enterprise Digital Transformation & Custom Engineering</span>
+              <span>Revenue-Engineered Digital Flagships & Bespoke Web Platforms</span>
             </Badge>
 
-            {/* Display H1 Typography */}
-            <h1 className="text-fluid-hero font-extrabold text-[var(--text-primary)]">
-              Transforming Complex Enterprise Systems into High-Performance Digital Engines
+            {/* Display H1 Typography (Deep Earthy Bronze) */}
+            <h1 className="text-fluid-hero font-extrabold text-[var(--text-primary)] tracking-tight">
+              We Build High-Converting Web Platforms for Companies That Cannot Afford to Look Ordinary or Load Slow
             </h1>
 
             {/* Lead Narrative */}
             <p className="text-fluid-body text-[var(--text-secondary)] max-w-2xl leading-relaxed">
-              We partner with forward-thinking enterprise leaders to engineer bespoke software, safely decouple legacy monolithic architectures, and deploy dedicated senior engineering pods with predictable milestone delivery.
+              Transforming outdated websites into lightning-fast, high-converting digital flagships. We combine bespoke Next.js decoupled engineering, sub-second speeds (&lt;0.8s), and design mastery that turns visitors into high-value pipeline.
             </p>
 
-            {/* Hero Action CTA Group */}
+            {/* Hero Action CTA Group (Warm Gold Button from Reference Image) */}
             <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
-              <a href="#briefing">
-                <Button variant="glow" size="lg" className="w-full sm:w-auto gap-2">
-                  <span>Schedule Executive Briefing</span>
+              <a href="#audit">
+                <Button variant="glow" size="lg" className="w-full sm:w-auto gap-2 text-base px-8 py-6 font-bold shadow-md">
+                  <span>Get Started</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
-              <a href="#services">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                  Explore Engineering Practices
+              <a href="#calculator">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto text-base px-6 py-6 border-[var(--border-strong)]">
+                  Calculate Revenue ROI
                 </Button>
               </a>
             </div>
 
-            {/* Trust Proof Badges */}
-            <div className="pt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-xs text-[var(--text-muted)] w-full max-w-3xl border-t border-[var(--border-subtle)]">
-              <div className="flex items-center justify-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-[var(--accent-primary)]" />
-                <span>ISO 27001 Certified</span>
+            {/* Signature 4 Elevated Cards (Directly derived from the 4 white cards in the screenshot) */}
+            <div className="pt-12 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 w-full max-w-5xl">
+              {/* Card 1: Easel / UI Craft */}
+              <div className="glass-card rounded-xl p-5 text-left space-y-3 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                  <LayoutTemplate className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">Bespoke Design</h4>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">Zero generic templates. Crafted for prestige and market authority.</p>
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <Award className="h-4 w-4 text-[var(--status-success)]" />
-                <span>99.4% On-Time Delivery</span>
+
+              {/* Card 2: Diamond / Precision */}
+              <div className="glass-card rounded-xl p-5 text-left space-y-3 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                  <Gem className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">Sub-Second Speed</h4>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">&lt;0.8s First Contentful Paint. 100/100 Core Web Vitals.</p>
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <BarChart3 className="h-4 w-4 text-indigo-500" />
-                <span>$2.4B+ Value Delivered</span>
+
+              {/* Card 3: Location / Global Edge */}
+              <div className="glass-card rounded-xl p-5 text-left space-y-3 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                  <Globe className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">Global Decoupling</h4>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">Next.js Edge + Django REST Framework API scalability.</p>
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <Users2 className="h-4 w-4 text-blue-500" />
-                <span>Senior Staff Engineers</span>
+
+              {/* Card 4: Command / Conversion */}
+              <div className="glass-card rounded-xl p-5 text-left space-y-3 transition-transform hover:-translate-y-1 hover:shadow-md border border-[var(--border-subtle)]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                  <Command className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-[var(--text-primary)]">Conversion ROI</h4>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">+40% to +180% average pipeline conversion lift.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -126,41 +180,41 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 2. QUANTIFIABLE ENTERPRISE IMPACT RIBBON */}
+      {/* 2. QUANTIFIABLE SPEED & CONVERSION METRICS RIBBON */}
       {/* ========================================================================= */}
-      <section id="impact" className="py-12 bg-[var(--surface-base)] border-b border-[var(--border-subtle)]">
+      <section className="py-12 bg-[var(--surface-base)] border-b border-[var(--border-subtle)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             <div className="space-y-1">
               <div className="text-3xl lg:text-4xl font-extrabold text-[var(--accent-primary)]">
-                $2.4B+
+                $180M+
               </div>
-              <div className="text-sm font-medium text-[var(--text-secondary)]">
-                Enterprise Transaction Volume
+              <div className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
+                Client Pipeline Revenue Generated
               </div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl lg:text-4xl font-extrabold text-[var(--text-primary)]">
-                -65%
+                &lt; 0.8s
               </div>
-              <div className="text-sm font-medium text-[var(--text-secondary)]">
-                Technical Debt & Defect Reduction
+              <div className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
+                Median First Contentful Paint (FCP)
               </div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl lg:text-4xl font-extrabold text-[var(--accent-primary)]">
-                4.8x
+                +84%
               </div>
-              <div className="text-sm font-medium text-[var(--text-secondary)]">
-                Accelerated Feature Velocity
+              <div className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
+                Average Qualified Conversion Lift
               </div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl lg:text-4xl font-extrabold text-[var(--text-primary)]">
-                100%
+                100 / 100
               </div>
-              <div className="text-sm font-medium text-[var(--text-secondary)]">
-                Enterprise Client Retention
+              <div className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
+                Google Lighthouse Performance Score
               </div>
             </div>
           </div>
@@ -168,120 +222,219 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. CORE ENGINEERING PRACTICES BENTO GRID */}
+      {/* 3. THE "COST OF ORDINARY" PROBLEM VS SOLUTION SHOWCASE */}
       {/* ========================================================================= */}
-      <section id="services" className="py-24 bg-[var(--canvas)] border-b border-[var(--border-subtle)]">
+      <section id="roi-gap" className="py-24 bg-[var(--canvas)] border-b border-[var(--border-subtle)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <Badge variant="default">Core Engineering Practices</Badge>
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <Badge variant="default">The Reality of Modern Web Standards</Badge>
             <h2 className="text-fluid-h2 font-bold text-[var(--text-primary)]">
-              Transforming Architecture into Strategic Advantage
+              The Invisible Revenue Drain: Why Typical Websites Fail to Convert
             </h2>
             <p className="text-sm text-[var(--text-secondary)]">
-              From de-risking legacy migrations to building high-concurrency custom platforms, our practices ensure institutional excellence at every phase.
+              Every 100ms of latency and generic template design silently leaks qualified buyers to competitors. See how a bespoke decoupled architecture changes the equation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* The Commodity Website (The Problem) */}
+            <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-6 sm:p-8 space-y-6">
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase font-bold tracking-wider text-rose-500">
+                  The Commodity Website Trap
+                </span>
+                <span className="text-xs text-rose-500/80 font-mono">Slow & Leaking Pipeline</span>
+              </div>
+              <h3 className="text-xl font-bold text-[var(--text-primary)]">
+                Bloated Templates & Fragmented CMS
+              </h3>
+              <ul className="space-y-3 text-xs sm:text-sm text-[var(--text-secondary)]">
+                <li className="flex items-start gap-2.5">
+                  <XCircle className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
+                  <span><strong>3.8s–5.2s mobile load time</strong> causing 53% of high-intent visitors to bounce immediately.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <XCircle className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
+                  <span><strong>Generic WordPress / theme builders</strong> that dilute brand credibility and fail to command premium pricing.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <XCircle className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
+                  <span><strong>Monolithic architecture bottlenecks</strong> that crash during marketing campaigns and product launches.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <XCircle className="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
+                  <span><strong>Poor WCAG compliance & SEO penalties</strong> due to bloated third-party plugin scripts.</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* The GB Technologies Flagship (The Solution) */}
+            <div className="rounded-2xl border border-[var(--border-gold)] bg-[var(--surface-base)] p-6 sm:p-8 space-y-6 shadow-md gold-shimmer-border">
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase font-bold tracking-wider text-[var(--accent-primary)]">
+                  The GB Technologies Flagship
+                </span>
+                <span className="text-xs text-emerald-600 dark:text-emerald-400 font-mono">Sub-Second & Conversion-Optimized</span>
+              </div>
+              <h3 className="text-xl font-bold text-[var(--text-primary)]">
+                Bespoke Decoupled Digital Engine
+              </h3>
+              <ul className="space-y-3 text-xs sm:text-sm text-[var(--text-secondary)]">
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <span><strong>Instant &lt;0.8s edge rendering</strong> keeping 95%+ of visitors engaged with sub-second fluid page transitions.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <span><strong>Master-crafted warm luxury design</strong> establishing instant institutional trust and elevated brand prestige.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <span><strong>Next.js App Router + Headless Django REST API</strong> that effortlessly scales to millions of requests without slowdown.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <span><strong>Guaranteed 100/100 Core Web Vitals & WCAG 2.2 AA</strong> accessibility out of the box.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 4. CAPABILITIES BENTO GRID (Warm Champagne & Gold Shimmer Craft) */}
+      {/* ========================================================================= */}
+      <section id="capabilities" className="py-24 bg-[var(--surface-base)] border-b border-[var(--border-subtle)]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+            <Badge variant="accent">Master-Crafted Capabilities</Badge>
+            <h2 className="text-fluid-h2 font-bold text-[var(--text-primary)]">
+              Engineering Every Layer for Performance and Commercial Impact
+            </h2>
+            <p className="text-sm text-[var(--text-secondary)]">
+              We combine world-class UI design, fluid typography, and enterprise-grade decoupled software engineering.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Bento Card 1: Legacy Monolith Modernization */}
+            {/* Bento Card 1: Digital Flagships */}
             <Card className="md:col-span-2 glass-card hover:border-[var(--accent-primary)]/40 transition-all">
               <CardHeader>
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] mb-2">
-                  <Workflow className="h-5 w-5" />
+                  <Gauge className="h-5 w-5" />
                 </div>
-                <CardTitle>Legacy Monolith Modernization & Decoupling</CardTitle>
+                <CardTitle>High-Conversion Digital Flagships</CardTitle>
                 <CardDescription>
-                  De-risk high-stakes system overhauls using the Strangler Fig pattern. We extract bounded contexts into headless API services and modern edge frontends with zero operational downtime.
+                  Designed for category leaders. We build flagship marketing web experiences that pair world-class aesthetics with extreme performance to maximize inbound conversion rates.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="rounded-lg bg-[var(--surface-raised)] p-4 text-xs font-mono text-[var(--text-secondary)] space-y-1.5 border border-[var(--border-subtle)]">
-                  <div className="flex items-center gap-2 text-indigo-400 font-semibold">
-                    <Terminal className="h-3.5 w-3.5" />
-                    <span>strangler-proxy: routing audit matrix</span>
+                <div className="rounded-lg bg-[var(--surface-raised)] p-4 text-xs font-mono text-[var(--text-secondary)] space-y-2 border border-[var(--border-subtle)]">
+                  <div className="flex items-center justify-between text-amber-700 dark:text-amber-400 font-semibold">
+                    <span>Google Lighthouse Audit: 100 / 100 / 100 / 100</span>
+                    <span className="text-emerald-600">PASSED</span>
                   </div>
-                  <div>[PROXY] /api/v1/auth/*        -&gt; [Headless Django REST Service: Healthy]</div>
-                  <div>[PROXY] /dashboard/*          -&gt; [Next.js App Router (React 19): Healthy]</div>
-                  <div>[FALLBACK] /legacy/billing/*   -&gt; [Original Monolith: Target Cutover Sprint 3]</div>
-                  <div className="text-emerald-500 font-medium">✓ Zero session drift detected. 100% traffic parity maintained.</div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-center font-sans">
+                    <div className="bg-[var(--surface-base)] p-2 rounded border border-[var(--border-subtle)]">
+                      <div className="text-sm font-bold text-emerald-600">0.6s</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">FCP (Instant)</div>
+                    </div>
+                    <div className="bg-[var(--surface-base)] p-2 rounded border border-[var(--border-subtle)]">
+                      <div className="text-sm font-bold text-emerald-600">0.9s</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">LCP (Hero Render)</div>
+                    </div>
+                    <div className="bg-[var(--surface-base)] p-2 rounded border border-[var(--border-subtle)]">
+                      <div className="text-sm font-bold text-emerald-600">0.00</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">CLS (Zero Shift)</div>
+                    </div>
+                    <div className="bg-[var(--surface-base)] p-2 rounded border border-[var(--border-subtle)]">
+                      <div className="text-sm font-bold text-emerald-600">32ms</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">INP (Response)</div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Bento Card 2: Custom Enterprise Software */}
+            {/* Bento Card 2: Bespoke Full-Stack Web Apps */}
             <Card className="glass-card hover:border-[var(--accent-primary)]/40 transition-all">
               <CardHeader>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-500 mb-2">
-                  <Code2 className="h-5 w-5" />
-                </div>
-                <CardTitle>Bespoke Full-Stack Engineering</CardTitle>
-                <CardDescription>
-                  Custom mission-critical software built with strict TypeScript contracts, domain-driven design, and resilient state synchronization.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2 text-xs text-[var(--text-secondary)]">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-indigo-500" />
-                  <span>Type-Safe Next.js & DRF Stacks</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-indigo-500" />
-                  <span>Micro-Frontends & Design Tokens</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-indigo-500" />
-                  <span>Automated CI/CD Quality Gates</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Bento Card 3: Architecture & DDD */}
-            <Card className="glass-card hover:border-[var(--accent-primary)]/40 transition-all">
-              <CardHeader>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500 mb-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] mb-2">
                   <Layers className="h-5 w-5" />
                 </div>
-                <CardTitle>Domain-Driven Architecture</CardTitle>
+                <CardTitle>Bespoke Web Applications</CardTitle>
                 <CardDescription>
-                  Establish clear bounded contexts, event-driven domain models, and long-term architectural blueprints that scale with organizational growth.
+                  Custom client portals, SaaS interfaces, and internal dashboards built with strict TypeScript contracts and real-time state.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2 text-xs text-[var(--text-secondary)]">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-500" />
-                  <span>Event Storming & Domain Modeling</span>
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+                  <span>Next.js 16 + React 19 Server Components</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-500" />
-                  <span>Technical Due Diligence Audits</span>
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+                  <span>Django REST Framework API Backend</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+                  <span>HttpOnly Cookie JWT Authentication</span>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Bento Card 4: Dedicated Engineering Pods */}
+            {/* Bento Card 3: Headless Modernization */}
+            <Card className="glass-card hover:border-[var(--accent-primary)]/40 transition-all">
+              <CardHeader>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] mb-2">
+                  <TrendingUp className="h-5 w-5" />
+                </div>
+                <CardTitle>Headless Decoupling</CardTitle>
+                <CardDescription>
+                  Safely migrate away from bloated monoliths and legacy CMS setups using the Strangler pattern with zero downtime.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2 text-xs text-[var(--text-secondary)]">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+                  <span>Zero Database Migration Downtime</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+                  <span>Full SEO & 301 URL Preservation</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+                  <span>Incremental Route-by-Route Cutover</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Bento Card 4: Conversion Optimization */}
             <Card className="md:col-span-2 glass-card hover:border-[var(--accent-primary)]/40 transition-all">
               <CardHeader>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500 mb-2">
-                  <Users2 className="h-5 w-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] mb-2">
+                  <Zap className="h-5 w-5" />
                 </div>
-                <CardTitle>Dedicated Senior Engineering Pods</CardTitle>
+                <CardTitle>Conversion Rate Optimization Architecture</CardTitle>
                 <CardDescription>
-                  Autonomous, self-directed delivery teams composed of Principal Architects, Senior Full-Stack Engineers, and QA specialists who integrate directly into your engineering workflows.
+                  Every layout, contrast ratio, and CTA positioning is grounded in cognitive usability science. We design clear visual paths that guide visitors to action without friction.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-3 gap-4 pt-2 text-center">
                   <div className="rounded-lg bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
-                    <div className="text-lg font-bold text-[var(--text-primary)]">Sprint-Based</div>
-                    <div className="text-[11px] text-[var(--text-muted)]">Predictable Velocity</div>
+                    <div className="text-lg font-bold text-[var(--text-primary)]">60-30-10</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">Visual Focus Balance</div>
                   </div>
                   <div className="rounded-lg bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
-                    <div className="text-lg font-bold text-emerald-500">Zero Onboarding Lag</div>
-                    <div className="text-[11px] text-[var(--text-muted)]">Day 1 Production Ready</div>
+                    <div className="text-lg font-bold text-[var(--accent-primary)]">11.2 : 1</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">AAA Text Contrast</div>
                   </div>
                   <div className="rounded-lg bg-[var(--surface-raised)] p-3 border border-[var(--border-subtle)]">
-                    <div className="text-lg font-bold text-[var(--accent-primary)]">Staff+ Only</div>
-                    <div className="text-[11px] text-[var(--text-muted)]">Elite Engineering Talent</div>
+                    <div className="text-lg font-bold text-emerald-600">Zero Shift</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">Visual Stability (CLS)</div>
                   </div>
                 </div>
               </CardContent>
@@ -291,60 +444,176 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. INTERACTIVE EXECUTIVE BRIEFING & CONSULTATION */}
+      {/* 5. INTERACTIVE REVENUE & CONVERSION CALCULATOR */}
       {/* ========================================================================= */}
-      <section id="briefing" className="py-24 bg-[var(--surface-base)]">
+      <section id="calculator" className="py-24 bg-[var(--canvas)] border-b border-[var(--border-subtle)]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+            <Badge variant="accent">Interactive ROI Estimator</Badge>
+            <h2 className="text-fluid-h2 font-bold text-[var(--text-primary)]">
+              Calculate the Revenue Impact of a Sub-Second Web Flagship
+            </h2>
+            <p className="text-sm text-[var(--text-secondary)]">
+              Adjust your current traffic and conversion parameters to see how a +45% conversion lift from sub-second speed directly accelerates your annual revenue.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto glass-card rounded-2xl p-6 sm:p-10 border border-[var(--border-gold)] shadow-lg">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              {/* Sliders on Left */}
+              <div className="lg:col-span-7 space-y-6">
+                {/* Slider 1: Monthly Visitors */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm font-semibold">
+                    <span className="text-[var(--text-primary)]">Monthly Unique Visitors</span>
+                    <span className="text-[var(--accent-primary)] font-mono font-bold">
+                      {monthlyVisitors.toLocaleString()} / mo
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={5000}
+                    max={250000}
+                    step={5000}
+                    value={monthlyVisitors}
+                    onChange={(e) => setMonthlyVisitors(Number(e.target.value))}
+                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)]"
+                  />
+                  <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
+                    <span>5,000</span>
+                    <span>100,000</span>
+                    <span>250,000+</span>
+                  </div>
+                </div>
+
+                {/* Slider 2: Current Conversion Rate */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm font-semibold">
+                    <span className="text-[var(--text-primary)]">Current Website Conversion Rate</span>
+                    <span className="text-[var(--accent-primary)] font-mono font-bold">
+                      {currentConversionRate.toFixed(1)}%
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0.5}
+                    max={6.0}
+                    step={0.1}
+                    value={currentConversionRate}
+                    onChange={(e) => setCurrentConversionRate(Number(e.target.value))}
+                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)]"
+                  />
+                  <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
+                    <span>0.5% (Subpar)</span>
+                    <span>2.0% (Average)</span>
+                    <span>6.0% (High)</span>
+                  </div>
+                </div>
+
+                {/* Slider 3: Average Order / Customer Value */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm font-semibold">
+                    <span className="text-[var(--text-primary)]">Average Deal / Customer Value</span>
+                    <span className="text-[var(--accent-primary)] font-mono font-bold">
+                      ${averageDealValue.toLocaleString()}
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={100}
+                    max={5000}
+                    step={100}
+                    value={averageDealValue}
+                    onChange={(e) => setAverageDealValue(Number(e.target.value))}
+                    className="w-full h-2 bg-[var(--surface-raised)] rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)]"
+                  />
+                  <div className="flex justify-between text-[11px] text-[var(--text-muted)]">
+                    <span>$100</span>
+                    <span>$2,500</span>
+                    <span>$5,000+</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Output Metric on Right */}
+              <div className="lg:col-span-5 rounded-xl bg-[var(--surface-raised)] p-6 text-center space-y-4 border border-[var(--border-subtle)]">
+                <span className="text-xs uppercase font-bold tracking-wider text-[var(--text-muted)]">
+                  Projected Annual Revenue Lift
+                </span>
+                <div className="text-4xl sm:text-5xl font-extrabold text-[var(--accent-primary)] font-mono tracking-tight">
+                  +${Math.round(annualRevenueGain).toLocaleString()}
+                </div>
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                  Based on an average <strong>+45% conversion lift</strong> from eliminating load latency, reducing cognitive friction, and establishing luxury visual authority.
+                </p>
+                <div className="pt-2">
+                  <a href="#audit">
+                    <Button variant="glow" size="sm" className="w-full font-bold">
+                      Claim Your Audit
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6. INTERACTIVE STRATEGY AUDIT & GET STARTED FORM */}
+      {/* ========================================================================= */}
+      <section id="audit" className="py-24 bg-[var(--surface-base)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-5 space-y-6">
-              <Badge variant="accent">Executive Advisory</Badge>
+              <Badge variant="accent">Executive Technical Audit</Badge>
               <h2 className="text-fluid-h2 font-bold text-[var(--text-primary)]">
-                Schedule an Architectural Discovery Session
+                Ready to Stop Looking Ordinary and Start Converting?
               </h2>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                Connect directly with our Principal Architects and Practice Leads. We will review your modernization objectives, evaluate legacy technical debt, and present a risk-mitigated technical roadmap tailored to your business timeline.
+                Schedule a confidential strategy session with our Principal Designers & Staff Engineers. We will analyze your existing website, audit your Core Web Vitals, and provide an actionable architectural plan to unlock pipeline.
               </p>
               <div className="space-y-3 pt-2 text-sm text-[var(--text-secondary)]">
                 <div className="flex items-center gap-3">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span>Strict Enterprise NDA prior to any technical disclosure</span>
+                  <span>Strict enterprise NDA prior to any discovery call</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span>Tailored Technical Architecture Scoping Document</span>
+                  <span>Comprehensive Core Web Vitals & CRO Audit Report</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span>Executive response within 24 business hours</span>
+                  <span>Guaranteed response within 24 business hours</span>
                 </div>
               </div>
             </div>
 
             {/* Right Contact Form Card */}
             <div className="lg:col-span-7">
-              <Card className="glass-card shadow-lg p-2 sm:p-4">
+              <Card className="glass-card shadow-lg p-2 sm:p-4 border-[var(--border-gold)]">
                 <CardHeader>
-                  <CardTitle>Request Executive Briefing</CardTitle>
+                  <CardTitle>Schedule Your Strategy Session</CardTitle>
                   <CardDescription>
-                    Provide your initiative parameters below to connect directly with our practice leadership.
+                    Fill in your project context below to connect directly with our engineering leadership.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {formStatus === "success" ? (
                     <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-8 text-center space-y-3">
-                      <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
+                      <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-600" />
                       <h3 className="text-lg font-bold text-[var(--text-primary)]">
-                        Briefing Request Received
+                        Audit Request Confirmed
                       </h3>
                       <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
-                        Thank you for contacting GB Technologies. A Principal Consultant has been assigned to your inquiry and will reach out with our standard bilateral NDA and availability within 24 business hours.
+                        Thank you for reaching out to GB Technologies. A Principal Architect has received your request and will follow up with our bilateral NDA and proposed meeting slots within 24 business hours.
                       </p>
                       <Button
                         variant="outline"
@@ -352,7 +621,7 @@ export default function HomePage() {
                         onClick={() => setFormStatus("idle")}
                         className="mt-4"
                       >
-                        Submit Another Request
+                        Submit Another Inquiry
                       </Button>
                     </div>
                   ) : (
@@ -366,7 +635,7 @@ export default function HomePage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Input
                           label="Full Name"
-                          placeholder="e.g. Elena Rostova"
+                          placeholder="e.g. Jonathan Vance"
                           required
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -374,7 +643,7 @@ export default function HomePage() {
                         <Input
                           label="Corporate Email"
                           type="email"
-                          placeholder="elena@enterprise.com"
+                          placeholder="jonathan@enterprise.com"
                           required
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -383,36 +652,36 @@ export default function HomePage() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Input
-                          label="Enterprise / Organization"
-                          placeholder="Global Technologies Corp."
+                          label="Organization / Brand"
+                          placeholder="Acme Technologies Corp."
                           value={formData.company}
                           onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                         />
                         <div className="space-y-1.5">
                           <label className="block text-xs font-medium text-[var(--text-secondary)] uppercase tracking-wider">
-                            Primary Engagement Area
+                            Primary Initiative
                           </label>
                           <select
                             value={formData.service_interest}
                             onChange={(e) => setFormData({ ...formData, service_interest: e.target.value })}
                             className="flex h-10 w-full rounded-md border border-[var(--border-subtle)] bg-[var(--surface-base)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--ring)] focus:ring-1 focus:ring-[var(--ring)]"
                           >
-                            <option value="Legacy Modernization">Legacy System Modernization & Decoupling</option>
-                            <option value="Bespoke Software Development">Bespoke Full-Stack Software Engineering</option>
-                            <option value="Dedicated Engineering Pod">Dedicated Senior Engineering Pod</option>
-                            <option value="Enterprise Architecture Advisory">Enterprise Architecture & DDD Advisory</option>
+                            <option value="Digital Flagship">High-Conversion Digital Flagship</option>
+                            <option value="Bespoke Web App">Bespoke Full-Stack Web Application</option>
+                            <option value="Decoupled Modernization">Decoupled Headless Modernization</option>
+                            <option value="Performance CRO Audit">Core Web Vitals & Conversion Audit</option>
                           </select>
                         </div>
                       </div>
 
                       <div className="space-y-1.5">
                         <label className="block text-xs font-medium text-[var(--text-secondary)] uppercase tracking-wider">
-                          Initiative Context & Timeline
+                          Project Parameters & Challenges
                         </label>
                         <textarea
                           rows={4}
                           required
-                          placeholder="Briefly describe your existing application stack, technical debt bottlenecks, target outcomes, or planned delivery milestones..."
+                          placeholder="Describe your current website platform, conversion bottlenecks, target launch timeline, or specific engineering needs..."
                           value={formData.message}
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                           className="flex w-full rounded-md border border-[var(--border-subtle)] bg-[var(--surface-base)] p-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--ring)] focus:ring-1 focus:ring-[var(--ring)]"
@@ -423,10 +692,10 @@ export default function HomePage() {
                         type="submit"
                         variant="glow"
                         size="lg"
-                        className="w-full gap-2"
+                        className="w-full gap-2 font-bold py-6 text-base"
                         isLoading={formStatus === "loading"}
                       >
-                        <span>Schedule Executive Briefing</span>
+                        <span>Request Architecture Audit</span>
                         <ArrowRight className="h-4 w-4" />
                       </Button>
                     </form>

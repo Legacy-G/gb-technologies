@@ -4,44 +4,49 @@ import * as React from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { Layers, Menu, X, ArrowRight } from "lucide-react";
+import { Sparkles, Menu, X, ArrowRight } from "lucide-react";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full glass-nav transition-all duration-200">
+    <header className="sticky top-0 z-50 w-full glass-champagne transition-all duration-200">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand Logo */}
+        {/* Brand Logo & Signature Emblem */}
         <Link
           href="/"
-          className="flex items-center gap-2.5 outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] rounded-md"
+          className="flex items-center gap-2.5 outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] rounded-md group"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-primary)] text-[var(--accent-foreground)] shadow-md">
-            <Layers className="h-5 w-5" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-primary)] text-[var(--accent-foreground)] shadow-sm transition-transform duration-200 group-hover:scale-105">
+            <Sparkles className="h-5 w-5" />
           </div>
-          <span className="text-lg font-bold tracking-tight text-[var(--text-primary)]">
-            GB <span className="text-[var(--accent-primary)]">Technologies</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="text-base sm:text-lg font-bold tracking-tight text-[var(--text-primary)] leading-tight">
+              GB <span className="text-[var(--accent-primary)] font-extrabold">Technologies</span>
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)] font-semibold hidden sm:inline">
+              Digital Flagships & Web Engineering
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--text-secondary)]">
-          <Link href="/#services" className="transition-colors hover:text-[var(--text-primary)]">
-            Services
+          <Link href="/#capabilities" className="transition-colors hover:text-[var(--text-primary)]">
+            Capabilities
           </Link>
-          <Link href="/#modernization" className="transition-colors hover:text-[var(--text-primary)]">
-            Modernization
+          <Link href="/#roi-gap" className="transition-colors hover:text-[var(--text-primary)]">
+            The Speed & ROI Gap
           </Link>
-          <Link href="/#impact" className="transition-colors hover:text-[var(--text-primary)]">
-            Enterprise Impact
+          <Link href="/#engineering" className="transition-colors hover:text-[var(--text-primary)]">
+            Bespoke Engineering
           </Link>
-          <Link href="/#methodology" className="transition-colors hover:text-[var(--text-primary)]">
-            Methodology
+          <Link href="/#calculator" className="transition-colors hover:text-[var(--text-primary)]">
+            Revenue Calculator
           </Link>
         </nav>
 
-        {/* Right CTA / Controls */}
+        {/* Right CTA & Controls */}
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
           <Link href="/auth/login">
@@ -49,9 +54,9 @@ export function Navbar() {
               Client Portal
             </Button>
           </Link>
-          <Link href="/#briefing">
-            <Button variant="glow" size="sm" className="gap-1.5">
-              <span>Executive Briefing</span>
+          <Link href="/#audit">
+            <Button variant="glow" size="sm" className="gap-1.5 font-semibold">
+              <span>Get Started</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -76,32 +81,32 @@ export function Navbar() {
         <div className="md:hidden border-b border-[var(--border-subtle)] bg-[var(--surface-base)] px-4 pt-2 pb-6 space-y-3">
           <div className="flex flex-col space-y-2 pt-2 pb-3">
             <Link
-              href="/#services"
+              href="/#capabilities"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Services
+              Capabilities
             </Link>
             <Link
-              href="/#modernization"
+              href="/#roi-gap"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Modernization
+              The Speed & ROI Gap
             </Link>
             <Link
-              href="/#impact"
+              href="/#engineering"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Enterprise Impact
+              Bespoke Engineering
             </Link>
             <Link
-              href="/#methodology"
+              href="/#calculator"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2 rounded-md text-base font-medium text-[var(--text-primary)] hover:bg-[var(--surface-raised)]"
             >
-              Methodology
+              Revenue Calculator
             </Link>
           </div>
           <div className="pt-2 flex flex-col gap-2">
@@ -110,9 +115,9 @@ export function Navbar() {
                 Client Portal
               </Button>
             </Link>
-            <Link href="/#briefing" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="glow" className="w-full">
-                Schedule Executive Briefing
+            <Link href="/#audit" onClick={() => setMobileMenuOpen(false)}>
+              <Button variant="glow" className="w-full font-semibold">
+                Get Started
               </Button>
             </Link>
           </div>

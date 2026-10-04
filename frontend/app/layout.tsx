@@ -5,14 +5,14 @@ import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 
 export const metadata: Metadata = {
-  title: "GB Technologies — Enterprise Digital Transformation & Custom Software",
+  title: "GB Technologies — Revenue-Engineered Web Platforms & Digital Flagships",
   description:
-    "Partnering with visionary global enterprises to build bespoke software, modernize mission-critical systems, and accelerate engineering velocity.",
+    "We engineer bespoke, conversion-obsessed web platforms, sub-second digital flagships, and decoupled modern applications for companies that cannot afford to look ordinary or load slow.",
   metadataBase: new URL("https://gb-technologies.com"),
   openGraph: {
-    title: "GB Technologies — Enterprise Digital Transformation & Custom Software",
+    title: "GB Technologies — Revenue-Engineered Web Platforms & Digital Flagships",
     description:
-      "Partnering with visionary global enterprises to build bespoke software, modernize mission-critical systems, and accelerate engineering velocity.",
+      "We engineer bespoke, conversion-obsessed web platforms, sub-second digital flagships, and decoupled modern applications.",
     siteName: "GB Technologies",
     locale: "en_US",
     type: "website",
