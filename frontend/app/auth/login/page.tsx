@@ -16,7 +16,6 @@ import {
   ShieldCheck,
   AlertCircle,
   ArrowLeft,
-  KeyRound,
   UserPlus,
   LogIn,
 } from "lucide-react";
@@ -133,30 +132,6 @@ function AuthFormContent() {
     }
   };
 
-  const handleQuickDemo = async () => {
-    setLoginUsername("admin");
-    setLoginPassword("admin");
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await apiClient.post<any>("/auth/login/", {
-        username: "admin",
-        password: "admin",
-      });
-
-      if (res?.user && typeof window !== "undefined") {
-        localStorage.setItem("gb_user", JSON.stringify(res.user));
-      }
-
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err?.data?.message || "Demo login failed.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden bg-[var(--canvas)]">
       {/* Soft Ambient Champagne Glow */}
@@ -238,39 +213,28 @@ function AuthFormContent() {
             </button>
           </div>
 
-          {/* Quick Demo Access Callout (Only in login mode) */}
-          {mode === "login" && (
-            <div className="rounded-2xl bg-[var(--surface-raised)] p-4 border border-[var(--border-subtle)] space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5">
-                  <KeyRound className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-                  <span>Instant Evaluation Access</span>
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-bold">
-                  1-Click
-                </span>
-              </div>
-              <p className="text-xs text-[var(--text-muted)]">
-                Explore the live client portal with real-time leads and Core Web Vitals telemetry.
-              </p>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleQuickDemo}
-                disabled={loading}
-                className="w-full text-xs font-bold border-[var(--border-gold)] hover:bg-[var(--accent-primary)]/10"
-              >
-                <span>⚡ Quick Demo Sign In</span>
-              </Button>
-            </div>
-          )}
-
-          {/* Error Message */}
+          {/* Error Message with Registration Prompt */}
           {error && (
-            <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs flex items-center gap-2 animate-in fade-in">
-              <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{error}</span>
+            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs space-y-2 animate-in fade-in">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <span className="font-semibold">{error}</span>
+              </div>
+              {mode === "login" && (
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode("register");
+                      setError(null);
+                    }}
+                    className="text-xs font-bold text-[var(--accent-primary)] hover:underline inline-flex items-center gap-1 transition-colors"
+                  >
+                    <span>Unregistered account? Register here</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -289,7 +253,7 @@ function AuthFormContent() {
                   </div>
                   <Input
                     type="text"
-                    placeholder="admin or sarah@cyberdyne.com"
+                    placeholder="Enter registered username or work email"
                     value={loginUsername}
                     onChange={(e) => setLoginUsername(e.target.value)}
                     className="pl-9 h-11 text-sm bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
@@ -299,13 +263,10 @@ function AuthFormContent() {
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1.5">
+                <div className="mb-1.5">
                   <label className="block text-xs font-semibold text-[var(--text-primary)]">
                     Password
                   </label>
-                  <span className="text-[11px] text-[var(--text-muted)]">
-                    (Demo: <code className="text-[var(--accent-primary)]">admin</code>)
-                  </span>
                 </div>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--text-muted)]">

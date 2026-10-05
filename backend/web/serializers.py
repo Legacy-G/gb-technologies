@@ -16,21 +16,40 @@ from drf_spectacular.utils import extend_schema_field
 class UserProfileSerializer(serializers.ModelSerializer):
     """Serializer for user profile metadata, including phone validation and image URLs."""
     profile_image_url = serializers.SerializerMethodField()
+    kyc_document_url = serializers.SerializerMethodField()
 
     class Meta:
         model = UserProfile
         fields = [
             'middlename',
             'company',
+            'job_title',
+            'bio',
             'date_of_birth',
             'phone_number',
             'country',
             'profile_image',
             'profile_image_url',
+            'kyc_status',
+            'kyc_id_type',
+            'kyc_id_number',
+            'kyc_document',
+            'kyc_document_url',
+            'kyc_submitted_at',
+            'kyc_verified_at',
+            'kyc_rejection_reason',
         ]
-        read_only_fields = ['profile_image_url']
+        read_only_fields = [
+            'profile_image_url',
+            'kyc_document_url',
+            'kyc_submitted_at',
+            'kyc_verified_at',
+            'kyc_status',
+            'kyc_rejection_reason',
+        ]
         extra_kwargs = {
-            'profile_image': {'write_only': True, 'required': False}
+            'profile_image': {'write_only': True, 'required': False},
+            'kyc_document': {'write_only': True, 'required': False},
         }
 
     @extend_schema_field(serializers.CharField(allow_null=True))
@@ -40,6 +59,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
             if request:
                 return request.build_absolute_uri(obj.profile_image.url)
             return obj.profile_image.url
+        return None
+
+    @extend_schema_field(serializers.CharField(allow_null=True))
+    def get_kyc_document_url(self, obj) -> str | None:
+        if obj.kyc_document:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.kyc_document.url)
+            return obj.kyc_document.url
         return None
 
     def validate_phone_number(self, value):
@@ -65,6 +93,18 @@ class CurrentUserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('userprofile', {})
 
+        # Also support flat profile fields passed directly in initial_data (e.g. multipart/form-data)
+        initial_data = getattr(self, 'initial_data', {})
+        flat_fields = [
+            'company', 'job_title', 'bio', 'phone_number',
+            'country', 'date_of_birth', 'middlename'
+        ]
+        for field in flat_fields:
+            if field in initial_data and field not in profile_data:
+                profile_data[field] = initial_data[field]
+        if 'profile_image' in initial_data and 'profile_image' not in profile_data:
+            profile_data['profile_image'] = initial_data['profile_image']
+
         # Update User fields
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -77,6 +117,19 @@ class CurrentUserSerializer(serializers.ModelSerializer):
         profile.save()
 
         return instance
+
+
+class KYCSubmissionSerializer(serializers.Serializer):
+    """Serializer for submitting identity verification documents for enterprise compliance review."""
+    id_type = serializers.ChoiceField(choices=UserProfile.KYC_ID_TYPE_CHOICES, required=True)
+    id_number = serializers.CharField(max_length=100, required=True)
+    document = serializers.FileField(required=True)
+
+
+class KYCReviewSerializer(serializers.Serializer):
+    """Serializer for reviewing and approving/rejecting user KYC verification status."""
+    status = serializers.ChoiceField(choices=['verified', 'rejected', 'unverified', 'pending'], required=True)
+    rejection_reason = serializers.CharField(max_length=500, required=False, allow_blank=True, default='')
 
 
 class RegisterSerializer(serializers.ModelSerializer):

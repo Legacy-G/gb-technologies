@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
+from django.core.files.uploadedfile import SimpleUploadedFile
 from web.models import UserProfile, ContactLead, WebsiteSpeedAudit
 
 
@@ -211,4 +212,74 @@ class GBTechnologiesAPITestCase(TestCase):
         self.assertIn('projects_timeline', response.data)
         self.assertIn('cluster_nodes', response.data)
         self.assertEqual(len(response.data['cluster_nodes']), 32)
+
+    def test_unregistered_user_login_fails_401(self):
+        """Test POST /api/v1/auth/login/ strictly rejects unregistered user with 401."""
+        url = reverse('api_v1:auth_login')
+        payload = {
+            "username": "nonexistent_client_user",
+            "password": "WrongPassword123!",
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertNotIn('access', response.data)
+
+    def test_profile_update_job_title_and_bio(self):
+        """Test PATCH /api/v1/users/me/ updates job title, bio, and company."""
+        self.client.force_authenticate(user=self.user)
+        url = reverse('api_v1:current_user')
+
+        patch_payload = {
+            "first_name": "Janet",
+            "last_name": "Smith",
+            "profile": {
+                "company": "Apex Dynamics",
+                "job_title": "Chief Technology Officer",
+                "bio": "Leading cloud modernization and edge architectures.",
+            }
+        }
+        response = self.client.patch(url, patch_payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.user.refresh_from_db()
+        self.user.userprofile.refresh_from_db()
+        self.assertEqual(self.user.userprofile.company, "Apex Dynamics")
+        self.assertEqual(self.user.userprofile.job_title, "Chief Technology Officer")
+        self.assertEqual(self.user.userprofile.bio, "Leading cloud modernization and edge architectures.")
+
+    def test_kyc_submission_and_review_workflow(self):
+        """Test POST /api/v1/users/kyc/ submits documents and /review/ approves them."""
+        self.client.force_authenticate(user=self.user)
+
+        # 1. Initial status is unverified
+        self.assertEqual(self.user.userprofile.kyc_status, 'unverified')
+
+        # 2. Submit KYC documents
+        kyc_url = reverse('api_v1:users_kyc')
+        fake_doc = SimpleUploadedFile("passport.pdf", b"%PDF-1.4 fake pdf content", content_type="application/pdf")
+        kyc_payload = {
+            "id_type": "passport",
+            "id_number": "USA-99887766",
+            "document": fake_doc,
+        }
+        submit_res = self.client.post(kyc_url, kyc_payload, format='multipart')
+        self.assertEqual(submit_res.status_code, status.HTTP_200_OK)
+
+        self.user.userprofile.refresh_from_db()
+        self.assertEqual(self.user.userprofile.kyc_status, 'pending')
+        self.assertEqual(self.user.userprofile.kyc_id_type, 'passport')
+        self.assertEqual(self.user.userprofile.kyc_id_number, 'USA-99887766')
+        self.assertIsNotNone(self.user.userprofile.kyc_submitted_at)
+
+        # 3. Review / Approve KYC
+        review_url = reverse('api_v1:users_kyc_review')
+        review_payload = {
+            "status": "verified"
+        }
+        review_res = self.client.post(review_url, review_payload, format='json')
+        self.assertEqual(review_res.status_code, status.HTTP_200_OK)
+
+        self.user.userprofile.refresh_from_db()
+        self.assertEqual(self.user.userprofile.kyc_status, 'verified')
+        self.assertIsNotNone(self.user.userprofile.kyc_verified_at)
 

@@ -12,6 +12,7 @@ import {
   Activity,
   Layers,
   Users,
+  ShieldCheck,
   Menu,
   X,
 } from "lucide-react";
@@ -24,8 +25,12 @@ interface UserProfile {
   last_name: string;
   profile?: {
     company?: string;
+    job_title?: string;
+    bio?: string;
     country?: string;
     phone_number?: string;
+    profile_image_url?: string | null;
+    kyc_status?: "unverified" | "pending" | "verified" | "rejected";
   };
 }
 
@@ -64,6 +69,10 @@ function DashboardHeaderContent() {
       }
     }
     loadUser();
+
+    const handleUpdate = () => loadUser();
+    window.addEventListener("gb_user_updated", handleUpdate);
+    return () => window.removeEventListener("gb_user_updated", handleUpdate);
   }, []);
 
   const handleSignOut = async () => {
@@ -177,6 +186,31 @@ function DashboardHeaderContent() {
                 85%
               </span>
             </Link>
+
+            <Link
+              href="/dashboard?view=profile"
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+                currentView === "profile"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
+                  : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              }`}
+            >
+              <ShieldCheck className={`h-3.5 w-3.5 ${
+                user?.profile?.kyc_status === "verified"
+                  ? "text-emerald-500"
+                  : user?.profile?.kyc_status === "pending"
+                  ? "text-amber-500"
+                  : "text-[var(--accent-primary)]"
+              }`} />
+              <span>Identity &amp; KYC</span>
+              <span className={`h-1.5 w-1.5 rounded-full ${
+                user?.profile?.kyc_status === "verified"
+                  ? "bg-emerald-500"
+                  : user?.profile?.kyc_status === "pending"
+                  ? "bg-amber-500 animate-pulse"
+                  : "bg-stone-400"
+              }`} />
+            </Link>
           </nav>
 
           {/* =================================================================== */}
@@ -196,18 +230,33 @@ function DashboardHeaderContent() {
             {/* Dark / Light Mode Switcher */}
             <ThemeToggle />
 
-            {/* Compact Executive User Pill */}
-            <div
-              className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)]"
-              title={`${displayName} • ${user?.profile?.company || "Enterprise Client"}`}
+            {/* Interactive Executive User Pill */}
+            <Link
+              href="/dashboard?view=profile"
+              className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] transition-all group"
+              title={`${displayName} • ${user?.profile?.company || "Enterprise Client"} (Click to edit profile & KYC)`}
             >
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 text-[var(--accent-foreground)] text-[10px] font-bold">
-                {initials}
+              <div className="relative">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 text-[var(--accent-foreground)] text-[10px] font-bold overflow-hidden">
+                  {user?.profile?.profile_image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={user.profile.profile_image_url}
+                      alt={displayName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    initials
+                  )}
+                </div>
+                {user?.profile?.kyc_status === "verified" && (
+                  <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-500 ring-1 ring-[var(--surface-raised)]" />
+                )}
               </div>
-              <span className="text-xs font-bold text-[var(--text-primary)] hidden sm:inline">
+              <span className="text-xs font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors hidden sm:inline">
                 {displayName}
               </span>
-            </div>
+            </Link>
 
             {/* Sign Out Action */}
             <Button
@@ -317,6 +366,30 @@ function DashboardHeaderContent() {
               </span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
                 85%
+              </span>
+            </Link>
+
+            <Link
+              href="/dashboard?view=profile"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-mono font-bold ${
+                currentView === "profile"
+                  ? "bg-[var(--text-primary)] text-[var(--canvas)]"
+                  : "text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-[var(--accent-primary)]" />
+                <span>🛡️ Identity &amp; KYC</span>
+              </span>
+              <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                user?.profile?.kyc_status === "verified"
+                  ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                  : user?.profile?.kyc_status === "pending"
+                  ? "bg-amber-500/20 text-amber-600 dark:text-amber-400"
+                  : "bg-stone-500/20 text-stone-500"
+              }`}>
+                {user?.profile?.kyc_status || "Unverified"}
               </span>
             </Link>
 

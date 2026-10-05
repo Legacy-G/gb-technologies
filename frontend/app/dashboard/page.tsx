@@ -7,8 +7,9 @@ import { FundViewMonitoringView } from "@/components/dashboard/fundview-monitori
 import { LeadsFeedWidget } from "@/components/dashboard/leads-feed-widget";
 import { ProjectMilestonesWidget } from "@/components/dashboard/project-milestones-widget";
 import { VitalsMonitorWidget } from "@/components/dashboard/vitals-monitor-widget";
+import { ProfileKycView } from "@/components/dashboard/profile-kyc-view";
 
-type DashboardTab = "crextio" | "fundview" | "leads" | "milestones";
+type DashboardTab = "crextio" | "fundview" | "leads" | "milestones" | "profile";
 
 function DashboardContent() {
   const router = useRouter();
@@ -45,6 +46,10 @@ function DashboardContent() {
             </div>
           </div>
         </div>
+      )}
+
+      {currentView === "profile" && (
+        <ProfileKycView />
       )}
     </div>
   );

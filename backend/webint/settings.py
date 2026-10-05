@@ -178,6 +178,9 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,
     'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
+    'ENUM_NAME_OVERRIDES': {
+        'KycIdTypeEnum': 'web.models.UserProfile.KYC_ID_TYPE_CHOICES',
+    },
 }
 
 # ==============================================================================

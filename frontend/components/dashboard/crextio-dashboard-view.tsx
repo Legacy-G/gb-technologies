@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -35,9 +36,12 @@ export interface UserProfileData {
   is_staff?: boolean;
   profile?: {
     company?: string;
+    job_title?: string;
+    bio?: string;
     country?: string;
     phone_number?: string;
     profile_image_url?: string | null;
+    kyc_status?: "unverified" | "pending" | "verified" | "rejected";
   };
 }
 
@@ -254,36 +258,72 @@ export function CrextioDashboardView({ onSwitchToMonitoring, user: propUser }: C
               {/* Elegant Modern Portrait Silhouette & Graphic */}
               <div className="relative flex flex-col items-center">
                 <div className="h-28 w-28 rounded-full border-4 border-[var(--surface-base)] shadow-xl overflow-hidden bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 flex items-center justify-center text-3xl font-heading font-black text-[var(--accent-foreground)]">
-                  {userInitials}
+                  {user?.profile?.profile_image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={user.profile.profile_image_url}
+                      alt={userFullName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    userInitials
+                  )}
                 </div>
                 <Badge
                   variant="outline"
-                  className="mt-3 bg-[var(--surface-base)]/90 backdrop-blur-md border-[var(--accent-primary)]/40 font-mono text-[11px] text-[var(--text-primary)] font-bold shadow-sm"
+                  className={`mt-3 bg-[var(--surface-base)]/90 backdrop-blur-md font-mono text-[11px] font-bold shadow-sm ${
+                    user?.profile?.kyc_status === "verified"
+                      ? "border-emerald-500/40 text-emerald-600 dark:text-emerald-400"
+                      : user?.profile?.kyc_status === "pending"
+                      ? "border-amber-500/40 text-amber-600 dark:text-amber-400"
+                      : "border-[var(--accent-primary)]/40 text-[var(--text-primary)]"
+                  }`}
                 >
-                  Enterprise Client
+                  {user?.profile?.kyc_status === "verified"
+                    ? "✓ KYC Verified"
+                    : user?.profile?.kyc_status === "pending"
+                    ? "⏳ KYC Pending"
+                    : "Enterprise Client"}
                 </Badge>
               </div>
 
-              {/* Floating Pill Overlay Badge (like $1,200 pill in Crextio) */}
+              {/* Floating Pill Overlay Badge */}
               <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-[var(--surface-base)]/95 backdrop-blur-md border border-[var(--border-subtle)] shadow-md flex items-center gap-1.5 text-xs font-mono font-bold text-[var(--accent-primary)]">
                 <TrendingUp className="h-3.5 w-3.5" />
                 <span>+$142,500/yr Saved</span>
               </div>
             </div>
 
-            <div className="p-5 space-y-2">
+            <div className="p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="min-w-0 flex-1 pr-2">
                   <h3 className="text-base font-bold text-[var(--text-primary)] truncate">
                     {userFullName}
                   </h3>
                   <p className="text-xs text-[var(--text-muted)] truncate">
-                    {userCompany}
+                    {user?.profile?.job_title ? `${user.profile.job_title} • ` : ""}{userCompany}
                   </p>
                 </div>
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${
+                  user?.profile?.kyc_status === "verified"
+                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                    : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                }`}>
                   <ShieldCheck className="h-4 w-4" />
                 </div>
+              </div>
+
+              <div className="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between">
+                <span className="text-[11px] text-[var(--text-muted)] font-mono">
+                  Executive Identity
+                </span>
+                <Link
+                  href="/dashboard?view=profile"
+                  className="text-xs font-bold text-[var(--accent-primary)] hover:underline inline-flex items-center gap-1"
+                >
+                  <span>Edit Profile &amp; KYC</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
             </div>
           </div>

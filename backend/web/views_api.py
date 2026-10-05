@@ -6,11 +6,13 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from django.conf import settings
 from django.db import connection
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 from datetime import datetime
 import urllib.request
@@ -18,10 +20,12 @@ import urllib.parse
 import json
 import time
 
-from .models import ContactLead, WebsiteSpeedAudit
+from .models import UserProfile, ContactLead, WebsiteSpeedAudit
 from .serializers import (
     CurrentUserSerializer,
     RegisterSerializer,
+    KYCSubmissionSerializer,
+    KYCReviewSerializer,
     ContactLeadSerializer,
     WebsiteSpeedAuditSerializer,
 )
@@ -189,10 +193,75 @@ class CurrentUserAPIView(generics.RetrieveUpdateAPIView):
     """Retrieve or update profile details for the currently authenticated user."""
     permission_classes = [IsAuthenticated]
     serializer_class = CurrentUserSerializer
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     @extend_schema(summary="Get Current User Profile")
     def get_object(self):
         return self.request.user
+
+
+class KYCSubmissionAPIView(APIView):
+    """Submit government identity document and details for enterprise KYC verification."""
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+    @extend_schema(
+        summary="Submit KYC Verification Documents",
+        request=KYCSubmissionSerializer,
+        responses={200: CurrentUserSerializer}
+    )
+    def post(self, request, *args, **kwargs):
+        serializer = KYCSubmissionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        profile.kyc_id_type = serializer.validated_data['id_type']
+        profile.kyc_id_number = serializer.validated_data['id_number']
+        profile.kyc_document = serializer.validated_data['document']
+        profile.kyc_status = 'pending'
+        profile.kyc_submitted_at = timezone.now()
+        profile.kyc_rejection_reason = ''
+        profile.save()
+
+        user_serializer = CurrentUserSerializer(request.user, context={'request': request})
+        return Response({
+            "message": "KYC verification documents submitted successfully for compliance review.",
+            "user": user_serializer.data,
+        }, status=status.HTTP_200_OK)
+
+
+class KYCReviewAPIView(APIView):
+    """Review and approve or reject KYC submission (compliance audit or simulation)."""
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Review KYC Verification (Compliance / Simulation)",
+        request=KYCReviewSerializer,
+        responses={200: CurrentUserSerializer}
+    )
+    def post(self, request, *args, **kwargs):
+        serializer = KYCReviewSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        new_status = serializer.validated_data['status']
+        profile.kyc_status = new_status
+        if new_status == 'verified':
+            profile.kyc_verified_at = timezone.now()
+            profile.kyc_rejection_reason = ''
+        elif new_status == 'rejected':
+            profile.kyc_rejection_reason = serializer.validated_data.get('rejection_reason') or 'Identity document could not be verified.'
+        elif new_status == 'unverified':
+            profile.kyc_verified_at = None
+            profile.kyc_submitted_at = None
+            profile.kyc_rejection_reason = ''
+        profile.save()
+
+        user_serializer = CurrentUserSerializer(request.user, context={'request': request})
+        return Response({
+            "message": f"KYC verification status updated to '{new_status}'.",
+            "user": user_serializer.data,
+        }, status=status.HTTP_200_OK)
 
 
 class ContactLeadListCreateAPIView(generics.ListCreateAPIView):

@@ -43,88 +43,64 @@ export async function POST(request: Request) {
         }
 
         return response;
+      } else {
+        // Django returned 400 or 401: Invalid credentials or user does not exist!
+        const errorData = await djangoRes.json().catch(() => ({}));
+        const message =
+          errorData?.detail ||
+          errorData?.message ||
+          "Account not found or invalid credentials. Please check your credentials or register first.";
+
+        return NextResponse.json(
+          { message, detail: message },
+          { status: djangoRes.status || 401 }
+        );
       }
     } catch {
-      // Backend is offline -> Fall back to resilient Edge authentication
+      // Backend is offline -> Check registered offline session
     }
 
-    // 2. Resilient Edge Demo Authentication
-    // Allow demo credentials or valid length password
-    if (
-      (username === "admin" && password === "admin") ||
-      (username === "demo" && password === "demo") ||
-      (username && password && password.length >= 4)
-    ) {
-      // Intelligently infer user name from username or demo identity
-      let firstName = "Client";
-      let lastName = "Stakeholder";
-      let company = "Enterprise Partner";
+    // 2. Strict Offline Session Verification (No Demo Bypasses)
+    // Only permit login if the user has an existing verified registered session in their client
+    const cookieHeader = request.headers.get("cookie") || "";
+    const sessionMatch = cookieHeader.match(/user_session=([^;]+)/);
+    if (sessionMatch) {
+      try {
+        const userObj = JSON.parse(decodeURIComponent(sessionMatch[1]));
+        if (
+          userObj &&
+          (userObj.username?.toLowerCase() === username.toLowerCase() ||
+           userObj.email?.toLowerCase() === username.toLowerCase())
+        ) {
+          // Recognized registered session
+          const response = NextResponse.json({
+            message: "Login successful",
+            user: userObj,
+            access: "edge-session-token-" + Date.now(),
+            refresh: "edge-session-refresh-" + Date.now(),
+          });
 
-      if (username === "admin") {
-        firstName = "Administrator";
-        lastName = "Root";
-        company = "GB Technologies Cloud";
-      } else if (username.includes(".")) {
-        const parts = username.split(".");
-        firstName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-        lastName = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-      } else if (username.includes("_")) {
-        const parts = username.split("_");
-        firstName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-        lastName = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-      } else {
-        firstName = username.charAt(0).toUpperCase() + username.slice(1);
-        lastName = "Executive";
-      }
+          response.cookies.set({
+            name: "access_token",
+            value: "edge-session-token-" + Date.now(),
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 60 * 60 * 24,
+          });
 
-      const edgeUser = {
-        id: Date.now(),
-        username: username,
-        email: `${username}@enterprise.com`,
-        first_name: firstName,
-        last_name: lastName,
-        is_staff: username === "admin",
-        profile: {
-          company: company,
-          country: "United States",
-          phone_number: "+1 (555) 234-5678",
-          profile_image_url: null,
-        },
-      };
-
-      const response = NextResponse.json({
-        message: "Login successful",
-        user: edgeUser,
-        access: "edge-demo-jwt-token-" + Date.now(),
-        refresh: "edge-demo-refresh-token-" + Date.now(),
-      });
-
-      // Set cookie for session persistence
-      response.cookies.set({
-        name: "access_token",
-        value: "edge-demo-jwt-token-" + Date.now(),
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24,
-      });
-
-      response.cookies.set({
-        name: "user_session",
-        value: encodeURIComponent(JSON.stringify(edgeUser)),
-        httpOnly: false,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7,
-      });
-
-      return response;
+          return response;
+        }
+      } catch {}
     }
 
+    // STRICT REJECTION: User is not registered or credentials invalid
     return NextResponse.json(
-      { message: "Invalid username or password" },
+      {
+        message: "No registered account found with these credentials. Please register for an account first.",
+        detail: "No active account found with the given credentials.",
+      },
       { status: 401 }
     );
   } catch (error: any) {

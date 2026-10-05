@@ -10,6 +10,8 @@ from .views_api import (
     LogoutAPIView,
     RegisterAPIView,
     CurrentUserAPIView,
+    KYCSubmissionAPIView,
+    KYCReviewAPIView,
     ContactLeadCreateAPIView,
     WebsiteSpeedAuditAPIView,
     TelemetryMetricsAPIView,
@@ -30,8 +32,10 @@ urlpatterns = [
     path('auth/logout/', LogoutAPIView.as_view(), name='auth_logout'),
     path('auth/register/', RegisterAPIView.as_view(), name='auth_register'),
 
-    # Current User Profile
+    # Current User Profile & KYC
     path('users/me/', CurrentUserAPIView.as_view(), name='current_user'),
+    path('users/kyc/', KYCSubmissionAPIView.as_view(), name='users_kyc'),
+    path('users/kyc/review/', KYCReviewAPIView.as_view(), name='users_kyc_review'),
 
     # Contact & Leads
     path('contact/leads/', ContactLeadCreateAPIView.as_view(), name='contact_leads'),
