@@ -12,11 +12,13 @@ export async function POST() {
     const response = NextResponse.json({ message: "Successfully logged out" });
     response.cookies.delete("access_token");
     response.cookies.delete("refresh_token");
+    response.cookies.delete("user_session");
     return response;
   } catch {
     const response = NextResponse.json({ message: "Successfully logged out" });
     response.cookies.delete("access_token");
     response.cookies.delete("refresh_token");
+    response.cookies.delete("user_session");
     return response;
   }
 }

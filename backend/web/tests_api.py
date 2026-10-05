@@ -45,7 +45,7 @@ class GBTechnologiesAPITestCase(TestCase):
         self.assertIn('openapi', response.data)
 
     def test_user_login_success(self):
-        """Test POST /api/v1/auth/login/ issues tokens and sets auth cookies."""
+        """Test POST /api/v1/auth/login/ issues tokens, returns user data, and sets auth cookies."""
         url = reverse('api_v1:auth_login')
         payload = {
             "username": self.test_username,
@@ -55,11 +55,14 @@ class GBTechnologiesAPITestCase(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('access', response.data)
         self.assertIn('refresh', response.data)
+        self.assertIn('user', response.data)
+        self.assertEqual(response.data['user']['username'], self.test_username)
+        self.assertEqual(response.data['user']['first_name'], "Jane")
         self.assertIn('access_token', response.cookies)
         self.assertIn('refresh_token', response.cookies)
 
     def test_user_registration(self):
-        """Test POST /api/v1/auth/register/ creates user and profile."""
+        """Test POST /api/v1/auth/register/ creates user, company profile, and returns tokens."""
         url = reverse('api_v1:auth_register')
         payload = {
             "username": "newclient",
@@ -68,13 +71,36 @@ class GBTechnologiesAPITestCase(TestCase):
             "password_confirm": "StrongPassword789!",
             "first_name": "Alan",
             "last_name": "Turing",
+            "company": "Turing Innovations",
         }
         response = self.client.post(url, payload, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(User.objects.filter(username="newclient").exists())
         new_user = User.objects.get(username="newclient")
         self.assertTrue(hasattr(new_user, 'userprofile'))
+        self.assertEqual(new_user.userprofile.company, "Turing Innovations")
+        self.assertEqual(response.data['user']['profile']['company'], "Turing Innovations")
         self.assertIn('access_token', response.cookies)
+
+    def test_cookie_based_authentication(self):
+        """Test GET /api/v1/users/me/ authenticates seamlessly via HttpOnly access_token cookie."""
+        login_url = reverse('api_v1:auth_login')
+        login_response = self.client.post(login_url, {
+            "username": self.test_username,
+            "password": self.test_password,
+        }, format='json')
+        self.assertEqual(login_response.status_code, status.HTTP_200_OK)
+        access_token = login_response.data['access']
+
+        # Create new unauthenticated client and set cookie
+        cookie_client = APIClient()
+        cookie_client.cookies['access_token'] = access_token
+
+        me_url = reverse('api_v1:current_user')
+        me_response = cookie_client.get(me_url)
+        self.assertEqual(me_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(me_response.data['username'], self.test_username)
+        self.assertEqual(me_response.data['email'], self.test_email)
 
     def test_current_user_profile_get_and_patch(self):
         """Test GET and PATCH /api/v1/users/me/ with Bearer token authentication."""

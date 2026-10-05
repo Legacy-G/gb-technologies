@@ -40,19 +40,27 @@ function DashboardHeaderContent() {
 
   React.useEffect(() => {
     async function loadUser() {
+      // 1. Check local cache first for instant synchronous display
+      if (typeof window !== "undefined") {
+        const cached = localStorage.getItem("gb_user");
+        if (cached) {
+          try {
+            setUser(JSON.parse(cached));
+          } catch {}
+        }
+      }
+
+      // 2. Fetch fresh user data from API endpoint
       try {
         const userData = await apiClient.get<UserProfile>("/users/me/");
-        setUser(userData);
+        if (userData && (userData.username || userData.email)) {
+          setUser(userData);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("gb_user", JSON.stringify(userData));
+          }
+        }
       } catch {
-        setUser({
-          username: "executive_client",
-          email: "executive@vancecapital.com",
-          first_name: "Marcus",
-          last_name: "Vance",
-          profile: {
-            company: "Vance Capital Partners",
-          },
-        });
+        // Keep cached user if available
       }
     }
     loadUser();
@@ -65,11 +73,24 @@ function DashboardHeaderContent() {
     } catch {
       // Ignore network errors on logout
     } finally {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("gb_user");
+      }
       router.push("/auth/login");
     }
   };
 
-  const displayName = user?.first_name ? `${user.first_name} ${user.last_name}` : "Marcus Vance";
+  const displayName = user
+    ? user.first_name
+      ? `${user.first_name} ${user.last_name || ""}`.trim()
+      : user.username
+    : "Executive Partner";
+
+  const initials = user
+    ? user.first_name && user.last_name
+      ? `${user.first_name[0]}${user.last_name[0]}`.toUpperCase()
+      : (user.first_name || user.username || "EP").slice(0, 2).toUpperCase()
+    : "EP";
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--canvas)]/95 backdrop-blur-md transition-colors">
@@ -176,9 +197,12 @@ function DashboardHeaderContent() {
             <ThemeToggle />
 
             {/* Compact Executive User Pill */}
-            <div className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)]">
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 text-[var(--accent-foreground)] text-[11px] font-bold">
-                {displayName.charAt(0)}
+            <div
+              className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)]"
+              title={`${displayName} • ${user?.profile?.company || "Enterprise Client"}`}
+            >
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 text-[var(--accent-foreground)] text-[10px] font-bold">
+                {initials}
               </div>
               <span className="text-xs font-bold text-[var(--text-primary)] hidden sm:inline">
                 {displayName}
@@ -212,6 +236,28 @@ function DashboardHeaderContent() {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-[var(--border-subtle)] space-y-2">
+            {/* User Profile in Mobile Drawer */}
+            <div className="px-3 py-2 flex items-center justify-between border-b border-[var(--border-subtle)] mb-2">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 text-[var(--accent-foreground)] text-xs font-bold">
+                  {initials}
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-[var(--text-primary)]">{displayName}</div>
+                  <div className="text-[10px] text-[var(--text-muted)]">{user?.profile?.company || user?.email || "Enterprise Client"}</div>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSignOut}
+                disabled={signingOut}
+                className="h-8 text-xs text-rose-500 hover:bg-rose-500/10 gap-1"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                <span>Sign Out</span>
+              </Button>
+            </div>
             <Link
               href="/dashboard?view=crextio"
               onClick={() => setMobileMenuOpen(false)}

@@ -100,9 +100,12 @@ class CookieTokenObtainPairView(TokenObtainPairView):
         tokens = serializer.validated_data
         access_token = tokens.get('access')
         refresh_token = tokens.get('refresh')
+        user = serializer.user
+        user_serializer = CurrentUserSerializer(user, context={'request': request})
 
         response = Response({
             "message": "Authentication successful",
+            "user": user_serializer.data,
             "access": access_token,
             "refresh": refresh_token,
         }, status=status.HTTP_200_OK)
@@ -163,6 +166,7 @@ class RegisterAPIView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        user.refresh_from_db()
 
         # Generate tokens immediately upon registration
         refresh = RefreshToken.for_user(user)

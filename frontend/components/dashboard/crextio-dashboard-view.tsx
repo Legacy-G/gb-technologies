@@ -25,12 +25,74 @@ import {
   Activity,
   Award,
 } from "lucide-react";
+import { apiClient } from "@/lib/api-client";
+
+export interface UserProfileData {
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  is_staff?: boolean;
+  profile?: {
+    company?: string;
+    country?: string;
+    phone_number?: string;
+    profile_image_url?: string | null;
+  };
+}
 
 interface CrextioDashboardProps {
   onSwitchToMonitoring?: () => void;
+  user?: UserProfileData | null;
 }
 
-export function CrextioDashboardView({ onSwitchToMonitoring }: CrextioDashboardProps) {
+export function CrextioDashboardView({ onSwitchToMonitoring, user: propUser }: CrextioDashboardProps) {
+  const [user, setUser] = React.useState<UserProfileData | null>(propUser || null);
+
+  React.useEffect(() => {
+    if (propUser) {
+      setUser(propUser);
+      return;
+    }
+    // Check cached user in browser
+    if (typeof window !== "undefined") {
+      const cached = localStorage.getItem("gb_user");
+      if (cached) {
+        try {
+          setUser(JSON.parse(cached));
+        } catch {}
+      }
+    }
+    // Fetch fresh user profile from API
+    async function loadUser() {
+      try {
+        const u = await apiClient.get<UserProfileData>("/users/me/");
+        if (u && (u.username || u.email)) {
+          setUser(u);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("gb_user", JSON.stringify(u));
+          }
+        }
+      } catch {}
+    }
+    loadUser();
+  }, [propUser]);
+
+  const userFirstName = user?.first_name || user?.username || "Partner";
+  const userFullName = user
+    ? user.first_name
+      ? `${user.first_name} ${user.last_name || ""}`.trim()
+      : user.username
+    : "Enterprise Client";
+  const userCompany = user?.profile?.company
+    ? `Managing Partner, ${user.profile.company}`
+    : "Enterprise Modernization Partner";
+  const userInitials = user
+    ? user.first_name && user.last_name
+      ? `${user.first_name[0]}${user.last_name[0]}`.toUpperCase()
+      : (user.first_name || user.username || "EP").slice(0, 2).toUpperCase()
+    : "EP";
+
   // Speed dial simulation state
   const [isRunning, setIsRunning] = React.useState(true);
   const [dialSeconds, setDialSeconds] = React.useState(62); // 0.62s FCP
@@ -87,7 +149,7 @@ export function CrextioDashboardView({ onSwitchToMonitoring }: CrextioDashboardP
                 Enterprise Modernization Hub
               </span>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text-primary)] font-heading tracking-tight mt-1">
-                Welcome in, Marcus
+                Welcome in, {userFirstName}
               </h1>
             </div>
 
@@ -192,7 +254,7 @@ export function CrextioDashboardView({ onSwitchToMonitoring }: CrextioDashboardP
               {/* Elegant Modern Portrait Silhouette & Graphic */}
               <div className="relative flex flex-col items-center">
                 <div className="h-28 w-28 rounded-full border-4 border-[var(--surface-base)] shadow-xl overflow-hidden bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 flex items-center justify-center text-3xl font-heading font-black text-[var(--accent-foreground)]">
-                  MV
+                  {userInitials}
                 </div>
                 <Badge
                   variant="outline"
@@ -211,11 +273,15 @@ export function CrextioDashboardView({ onSwitchToMonitoring }: CrextioDashboardP
 
             <div className="p-5 space-y-2">
               <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-bold text-[var(--text-primary)]">Marcus Vance</h3>
-                  <p className="text-xs text-[var(--text-muted)]">Managing Partner, Vance Capital</p>
+                <div className="min-w-0 flex-1 pr-2">
+                  <h3 className="text-base font-bold text-[var(--text-primary)] truncate">
+                    {userFullName}
+                  </h3>
+                  <p className="text-xs text-[var(--text-muted)] truncate">
+                    {userCompany}
+                  </p>
                 </div>
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                   <ShieldCheck className="h-4 w-4" />
                 </div>
               </div>
