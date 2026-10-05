@@ -45,12 +45,17 @@ function DashboardHeaderContent() {
 
   React.useEffect(() => {
     async function loadUser() {
+      let hasValidCached = false;
       // 1. Check local cache first for instant synchronous display
       if (typeof window !== "undefined") {
         const cached = localStorage.getItem("gb_user");
         if (cached) {
           try {
-            setUser(JSON.parse(cached));
+            const parsed = JSON.parse(cached);
+            if (parsed && (parsed.username || parsed.email)) {
+              setUser(parsed);
+              hasValidCached = true;
+            }
           } catch {}
         }
       }
@@ -63,9 +68,20 @@ function DashboardHeaderContent() {
           if (typeof window !== "undefined") {
             localStorage.setItem("gb_user", JSON.stringify(userData));
           }
+        } else if (!hasValidCached) {
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("gb_user");
+          }
+          router.push("/auth/login");
         }
-      } catch {
-        // Keep cached user if available
+      } catch (err: any) {
+        // If 401 or unauthorized and no cached user, redirect to login
+        if (err?.status === 401 || err?.statusCode === 401 || !hasValidCached) {
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("gb_user");
+          }
+          router.push("/auth/login");
+        }
       }
     }
     loadUser();
@@ -73,7 +89,7 @@ function DashboardHeaderContent() {
     const handleUpdate = () => loadUser();
     window.addEventListener("gb_user_updated", handleUpdate);
     return () => window.removeEventListener("gb_user_updated", handleUpdate);
-  }, []);
+  }, [router]);
 
   const handleSignOut = async () => {
     setSigningOut(true);
@@ -104,7 +120,7 @@ function DashboardHeaderContent() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--canvas)]/95 backdrop-blur-md transition-colors">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4">
+        <div className="flex h-16 items-center justify-between gap-3 sm:gap-4">
           {/* =================================================================== */}
           {/* GROUP 1 (LEFT): BRAND IDENTITY & STATUS                             */}
           {/* =================================================================== */}
@@ -123,7 +139,7 @@ function DashboardHeaderContent() {
               </div>
             </Link>
 
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-secondary)] font-semibold">
+            <span className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-secondary)] font-semibold">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span>Production Edge</span>
             </span>
@@ -132,10 +148,10 @@ function DashboardHeaderContent() {
           {/* =================================================================== */}
           {/* GROUP 2 (CENTER): CREXTIO / FUNDVIEW SEGMENTED CAPSULE NAV         */}
           {/* =================================================================== */}
-          <nav className="hidden md:flex items-center p-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] shadow-xs">
+          <nav className="hidden lg:flex items-center p-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] shadow-xs">
             <Link
               href="/dashboard?view=crextio"
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
                 currentView === "crextio"
                   ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -147,7 +163,7 @@ function DashboardHeaderContent() {
 
             <Link
               href="/dashboard?view=fundview"
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
                 currentView === "fundview"
                   ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -159,7 +175,7 @@ function DashboardHeaderContent() {
 
             <Link
               href="/dashboard?view=leads"
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
                 currentView === "leads"
                   ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -167,14 +183,14 @@ function DashboardHeaderContent() {
             >
               <Users className="h-3.5 w-3.5 text-amber-500" />
               <span>Inbound Leads</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[var(--accent-primary)]/20 text-[var(--accent-primary)] font-bold">
+              <span className="hidden xl:inline-flex text-[10px] px-1.5 py-0.2 rounded-full bg-[var(--accent-primary)]/20 text-[var(--accent-primary)] font-bold">
                 18
               </span>
             </Link>
 
             <Link
               href="/dashboard?view=milestones"
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
                 currentView === "milestones"
                   ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -182,14 +198,14 @@ function DashboardHeaderContent() {
             >
               <Layers className="h-3.5 w-3.5 text-cyan-500" />
               <span>Roadmap</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
+              <span className="hidden xl:inline-flex text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
                 85%
               </span>
             </Link>
 
             <Link
               href="/dashboard?view=profile"
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
                 currentView === "profile"
                   ? "bg-[var(--text-primary)] text-[var(--canvas)] shadow-xs"
                   : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -220,7 +236,7 @@ function DashboardHeaderContent() {
             {/* Discrete Flagship Site Link */}
             <Link
               href="/"
-              className="hidden lg:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)] transition-all"
+              className="hidden xl:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)] transition-all"
               title="Return to public marketing flagship"
             >
               <span>Live Flagship</span>
@@ -233,10 +249,10 @@ function DashboardHeaderContent() {
             {/* Interactive Executive User Pill */}
             <Link
               href="/dashboard?view=profile"
-              className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] transition-all group"
+              className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-[var(--surface-raised)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] transition-all group max-w-[180px]"
               title={`${displayName} • ${user?.profile?.company || "Enterprise Client"} (Click to edit profile & KYC)`}
             >
-              <div className="relative">
+              <div className="relative shrink-0">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-amber-200 text-[var(--accent-foreground)] text-[10px] font-bold overflow-hidden">
                   {user?.profile?.profile_image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -253,7 +269,7 @@ function DashboardHeaderContent() {
                   <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-500 ring-1 ring-[var(--surface-raised)]" />
                 )}
               </div>
-              <span className="text-xs font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors hidden sm:inline">
+              <span className="text-xs font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors hidden sm:inline truncate">
                 {displayName}
               </span>
             </Link>
@@ -270,11 +286,11 @@ function DashboardHeaderContent() {
               <LogOut className="h-4 w-4" />
             </Button>
 
-            {/* Mobile Drawer Toggle */}
+            {/* Mobile / Tablet Drawer Toggle (visible below lg) */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-1.5 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
+              className="lg:hidden p-1.5 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface-raised)]"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -282,9 +298,9 @@ function DashboardHeaderContent() {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile / Tablet Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-[var(--border-subtle)] space-y-2">
+          <div className="lg:hidden py-4 border-t border-[var(--border-subtle)] space-y-2">
             {/* User Profile in Mobile Drawer */}
             <div className="px-3 py-2 flex items-center justify-between border-b border-[var(--border-subtle)] mb-2">
               <div className="flex items-center gap-2">

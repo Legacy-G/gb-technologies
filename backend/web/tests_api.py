@@ -62,6 +62,19 @@ class GBTechnologiesAPITestCase(TestCase):
         self.assertIn('access_token', response.cookies)
         self.assertIn('refresh_token', response.cookies)
 
+    def test_user_login_with_email_success(self):
+        """Test POST /api/v1/auth/login/ successfully authenticates using email instead of username."""
+        url = reverse('api_v1:auth_login')
+        payload = {
+            "username": self.test_email,  # Passing email in the username field
+            "password": self.test_password,
+        }
+        response = self.client.post(url, payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('access', response.data)
+        self.assertEqual(response.data['user']['username'], self.test_username)
+        self.assertEqual(response.data['user']['email'], self.test_email)
+
     def test_user_registration(self):
         """Test POST /api/v1/auth/register/ creates user, company profile, and returns tokens."""
         url = reverse('api_v1:auth_register')

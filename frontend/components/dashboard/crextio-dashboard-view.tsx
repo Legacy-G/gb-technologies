@@ -80,6 +80,21 @@ export function CrextioDashboardView({ onSwitchToMonitoring, user: propUser }: C
       } catch {}
     }
     loadUser();
+
+    const handleUpdate = () => {
+      if (typeof window !== "undefined") {
+        const cached = localStorage.getItem("gb_user");
+        if (cached) {
+          try {
+            setUser(JSON.parse(cached));
+          } catch {}
+        }
+      }
+      loadUser();
+    };
+
+    window.addEventListener("gb_user_updated", handleUpdate);
+    return () => window.removeEventListener("gb_user_updated", handleUpdate);
   }, [propUser]);
 
   const userFirstName = user?.first_name || user?.username || "Partner";

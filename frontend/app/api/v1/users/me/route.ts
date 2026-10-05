@@ -40,21 +40,11 @@ export async function GET(request: Request) {
       }
     }
 
-    // 3. Neutral Fallback (No hardcoded Marcus Vance)
-    return NextResponse.json({
-      username: "client_partner",
-      email: "client@enterprise.com",
-      first_name: "Client",
-      last_name: "Partner",
-      is_staff: false,
-      profile: {
-        company: "Enterprise Modernization Partner",
-        country: "United States",
-        phone_number: "+1 (555) 234-5678",
-        profile_image_url: null,
-        kyc_status: "unverified",
-      },
-    });
+    // 3. No authenticated session found -> Return 401
+    return NextResponse.json(
+      { message: "Authentication required. Please sign in." },
+      { status: 401 }
+    );
   } catch (error: any) {
     return NextResponse.json({ message: error?.message || "User profile unavailable" }, { status: 500 });
   }

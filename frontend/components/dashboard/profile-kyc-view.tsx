@@ -86,28 +86,44 @@ export function ProfileKycView() {
 
   // Load User Data
   const loadUserData = React.useCallback(async () => {
+    let hasValidCached = false;
     try {
       // Check cache first
       if (typeof window !== "undefined") {
         const cached = localStorage.getItem("gb_user");
         if (cached) {
-          const parsed = JSON.parse(cached);
-          setUser(parsed);
-          populateForm(parsed);
+          try {
+            const parsed = JSON.parse(cached);
+            if (parsed && (parsed.username || parsed.email)) {
+              setUser(parsed);
+              populateForm(parsed);
+              hasValidCached = true;
+            }
+          } catch {}
         }
       }
 
       // Fetch fresh
       const freshUser = await apiClient.get<UserProfileData>("/users/me/");
-      if (freshUser) {
+      if (freshUser && (freshUser.username || freshUser.email)) {
         setUser(freshUser);
         populateForm(freshUser);
         if (typeof window !== "undefined") {
           localStorage.setItem("gb_user", JSON.stringify(freshUser));
         }
+      } else if (!hasValidCached) {
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("gb_user");
+          window.location.href = "/auth/login";
+        }
       }
-    } catch {
-      // Use cached if available
+    } catch (err: any) {
+      if (err?.status === 401 || err?.statusCode === 401 || !hasValidCached) {
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("gb_user");
+          window.location.href = "/auth/login";
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -472,14 +488,14 @@ export function ProfileKycView() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     First Name
                   </label>
-                  <div className="relative">
-                    <User className="h-3.5 w-3.5 absolute left-3 top-3.5 text-[var(--text-muted)] pointer-events-none" />
+                  <div className="relative flex items-center">
+                    <User className="h-3.5 w-3.5 absolute left-3.5 text-[var(--text-muted)] pointer-events-none" />
                     <Input
                       type="text"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder="Jane"
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                       required
                     />
                   </div>
@@ -489,14 +505,14 @@ export function ProfileKycView() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Last Name
                   </label>
-                  <div className="relative">
-                    <User className="h-3.5 w-3.5 absolute left-3 top-3.5 text-[var(--text-muted)] pointer-events-none" />
+                  <div className="relative flex items-center">
+                    <User className="h-3.5 w-3.5 absolute left-3.5 text-[var(--text-muted)] pointer-events-none" />
                     <Input
                       type="text"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       placeholder="Doe"
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                       required
                     />
                   </div>
@@ -509,14 +525,14 @@ export function ProfileKycView() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Work Email
                   </label>
-                  <div className="relative">
-                    <Mail className="h-3.5 w-3.5 absolute left-3 top-3.5 text-[var(--text-muted)] pointer-events-none" />
+                  <div className="relative flex items-center">
+                    <Mail className="h-3.5 w-3.5 absolute left-3.5 text-[var(--text-muted)] pointer-events-none" />
                     <Input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="jane@enterprise.com"
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                       required
                     />
                   </div>
@@ -541,14 +557,14 @@ export function ProfileKycView() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Company / Organization
                   </label>
-                  <div className="relative">
-                    <Building className="h-3.5 w-3.5 absolute left-3 top-3.5 text-[var(--text-muted)] pointer-events-none" />
+                  <div className="relative flex items-center">
+                    <Building className="h-3.5 w-3.5 absolute left-3.5 text-[var(--text-muted)] pointer-events-none" />
                     <Input
                       type="text"
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
                       placeholder="Apex Dynamics"
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     />
                   </div>
                 </div>
@@ -557,14 +573,14 @@ export function ProfileKycView() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Job Title / Role
                   </label>
-                  <div className="relative">
-                    <Briefcase className="h-3.5 w-3.5 absolute left-3 top-3.5 text-[var(--text-muted)] pointer-events-none" />
+                  <div className="relative flex items-center">
+                    <Briefcase className="h-3.5 w-3.5 absolute left-3.5 text-[var(--text-muted)] pointer-events-none" />
                     <Input
                       type="text"
                       value={jobTitle}
                       onChange={(e) => setJobTitle(e.target.value)}
                       placeholder="Chief Technology Officer"
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     />
                   </div>
                 </div>
@@ -576,14 +592,14 @@ export function ProfileKycView() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Phone Number <span className="text-[10px] text-[var(--text-muted)] font-normal">(E.164 e.g. +14155552671)</span>
                   </label>
-                  <div className="relative">
-                    <Phone className="h-3.5 w-3.5 absolute left-3 top-3.5 text-[var(--text-muted)] pointer-events-none" />
+                  <div className="relative flex items-center">
+                    <Phone className="h-3.5 w-3.5 absolute left-3.5 text-[var(--text-muted)] pointer-events-none" />
                     <Input
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+14155552671"
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     />
                   </div>
                 </div>
@@ -592,14 +608,14 @@ export function ProfileKycView() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Country / Headquarters
                   </label>
-                  <div className="relative">
-                    <Globe className="h-3.5 w-3.5 absolute left-3 top-3.5 text-[var(--text-muted)] pointer-events-none" />
+                  <div className="relative flex items-center">
+                    <Globe className="h-3.5 w-3.5 absolute left-3.5 text-[var(--text-muted)] pointer-events-none" />
                     <Input
                       type="text"
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
                       placeholder="United States"
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     />
                   </div>
                 </div>
@@ -611,13 +627,13 @@ export function ProfileKycView() {
                   Executive Bio / Scope of Authority
                 </label>
                 <div className="relative">
-                  <FileText className="h-3.5 w-3.5 absolute left-3 top-3 text-[var(--text-muted)] pointer-events-none" />
+                  <FileText className="h-3.5 w-3.5 absolute left-3.5 top-3 text-[var(--text-muted)] pointer-events-none" />
                   <textarea
                     rows={3}
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     placeholder="Briefly describe your modernization remit or infrastructure objectives..."
-                    className="w-full pl-9 pr-3 py-2 text-xs bg-[var(--surface-base)] border border-[var(--border-strong)] rounded-xl text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--accent-primary)] focus:border-[var(--accent-primary)]"
+                    className="w-full pl-10 pr-3 py-2 text-xs bg-[var(--surface-base)] border border-[var(--border-strong)] rounded-xl text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--accent-primary)] focus:border-[var(--accent-primary)]"
                   />
                 </div>
               </div>

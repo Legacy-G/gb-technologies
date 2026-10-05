@@ -24,6 +24,7 @@ from .models import UserProfile, ContactLead, WebsiteSpeedAudit
 from .serializers import (
     CurrentUserSerializer,
     RegisterSerializer,
+    EmailOrUsernameTokenObtainPairSerializer,
     KYCSubmissionSerializer,
     KYCReviewSerializer,
     ContactLeadSerializer,
@@ -91,15 +92,19 @@ class HealthCheckView(APIView):
         })
 
 
-class CookieTokenObtainPairView(TokenObtainPairView):
-    """Exchange username/email and password for JWT tokens and set HttpOnly cookies."""
-    @extend_schema(summary="User Login (JWT & HttpOnly Cookies)")
+class CookieTokenObtainPairView(APIView):
+    """Exchange username or email and password for JWT tokens and set HttpOnly cookies."""
+    permission_classes = [AllowAny]
+    serializer_class = EmailOrUsernameTokenObtainPairSerializer
+
+    @extend_schema(
+        summary="User Login (Username/Email, JWT & HttpOnly Cookies)",
+        request=EmailOrUsernameTokenObtainPairSerializer,
+        responses={200: CurrentUserSerializer}
+    )
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
         tokens = serializer.validated_data
         access_token = tokens.get('access')

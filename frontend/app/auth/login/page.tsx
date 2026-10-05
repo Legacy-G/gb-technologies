@@ -213,7 +213,7 @@ function AuthFormContent() {
             </button>
           </div>
 
-          {/* Error Message with Registration Prompt */}
+          {/* Error Message with Registration / Login Quick Switch Prompts */}
           {error && (
             <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs space-y-2 animate-in fade-in">
               <div className="flex items-center gap-2">
@@ -235,6 +235,25 @@ function AuthFormContent() {
                   </button>
                 </div>
               )}
+              {mode === "register" && error.toLowerCase().includes("already exists") && (
+                <div className="pt-1.5 flex items-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const prefill = regEmail || regUsername;
+                      if (prefill) {
+                        setLoginUsername(prefill);
+                      }
+                      setMode("login");
+                      setError(null);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--surface-base)] border border-[var(--border-gold)] text-xs font-bold text-[var(--accent-primary)] hover:bg-[var(--surface-raised)] transition-colors shadow-xs"
+                  >
+                    <LogIn className="h-3.5 w-3.5" />
+                    <span>Account already exists — Sign in with {regEmail || regUsername || "this account"} &rarr;</span>
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -247,8 +266,8 @@ function AuthFormContent() {
                 <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1.5">
                   Username or Work Email
                 </label>
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--text-muted)]">
+                <div className="relative flex items-center">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                     <User className="h-4 w-4" />
                   </div>
                   <Input
@@ -256,7 +275,8 @@ function AuthFormContent() {
                     placeholder="Enter registered username or work email"
                     value={loginUsername}
                     onChange={(e) => setLoginUsername(e.target.value)}
-                    className="pl-9 h-11 text-sm bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                    autoComplete="username"
+                    className="pl-10 h-11 text-sm bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     required
                   />
                 </div>
@@ -268,8 +288,8 @@ function AuthFormContent() {
                     Password
                   </label>
                 </div>
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--text-muted)]">
+                <div className="relative flex items-center">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                     <Lock className="h-4 w-4" />
                   </div>
                   <Input
@@ -277,7 +297,8 @@ function AuthFormContent() {
                     placeholder="••••••••"
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
-                    className="pl-9 h-11 text-sm bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                    autoComplete="current-password"
+                    className="pl-10 h-11 text-sm bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     required
                   />
                 </div>
@@ -313,6 +334,7 @@ function AuthFormContent() {
                     placeholder="Sarah"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    autoComplete="given-name"
                     className="h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     required
                   />
@@ -326,6 +348,7 @@ function AuthFormContent() {
                     placeholder="Connor"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    autoComplete="family-name"
                     className="h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     required
                   />
@@ -336,8 +359,8 @@ function AuthFormContent() {
                 <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                   Company / Organization
                 </label>
-                <div className="relative">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--text-muted)]">
+                <div className="relative flex items-center">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                     <Building className="h-3.5 w-3.5" />
                   </div>
                   <Input
@@ -345,7 +368,8 @@ function AuthFormContent() {
                     placeholder="Cyberdyne Systems or Vance Capital"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
-                    className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                    autoComplete="organization"
+                    className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                     required
                   />
                 </div>
@@ -356,8 +380,8 @@ function AuthFormContent() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Username
                   </label>
-                  <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--text-muted)]">
+                  <div className="relative flex items-center">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                       <User className="h-3.5 w-3.5" />
                     </div>
                     <Input
@@ -365,7 +389,8 @@ function AuthFormContent() {
                       placeholder="sconnor"
                       value={regUsername}
                       onChange={(e) => setRegUsername(e.target.value)}
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      autoComplete="username"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                       required
                     />
                   </div>
@@ -375,8 +400,8 @@ function AuthFormContent() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Work Email
                   </label>
-                  <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--text-muted)]">
+                  <div className="relative flex items-center">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                       <Mail className="h-3.5 w-3.5" />
                     </div>
                     <Input
@@ -384,7 +409,8 @@ function AuthFormContent() {
                       placeholder="sarah@cyberdyne.com"
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      autoComplete="email"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                       required
                     />
                   </div>
@@ -396,8 +422,8 @@ function AuthFormContent() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Password
                   </label>
-                  <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--text-muted)]">
+                  <div className="relative flex items-center">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                       <Lock className="h-3.5 w-3.5" />
                     </div>
                     <Input
@@ -405,7 +431,8 @@ function AuthFormContent() {
                       placeholder="••••••••"
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      autoComplete="new-password"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                       required
                     />
                   </div>
@@ -415,8 +442,8 @@ function AuthFormContent() {
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
                     Confirm Password
                   </label>
-                  <div className="relative">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[var(--text-muted)]">
+                  <div className="relative flex items-center">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[var(--text-muted)]">
                       <Lock className="h-3.5 w-3.5" />
                     </div>
                     <Input
@@ -424,7 +451,8 @@ function AuthFormContent() {
                       placeholder="••••••••"
                       value={regPasswordConfirm}
                       onChange={(e) => setRegPasswordConfirm(e.target.value)}
-                      className="pl-9 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
+                      autoComplete="new-password"
+                      className="pl-10 h-10 text-xs bg-[var(--surface-base)] border-[var(--border-strong)] rounded-xl"
                       required
                     />
                   </div>

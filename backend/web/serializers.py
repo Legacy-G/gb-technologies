@@ -5,6 +5,7 @@ Django REST Framework serializers for GB Technologies Decoupled Platform.
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+from django.db.models import Q
 from decimal import Decimal
 from .models import UserProfile, ContactLead, WebsiteSpeedAudit
 import re
@@ -132,6 +133,54 @@ class KYCReviewSerializer(serializers.Serializer):
     rejection_reason = serializers.CharField(max_length=500, required=False, allow_blank=True, default='')
 
 
+class EmailOrUsernameTokenObtainPairSerializer(serializers.Serializer):
+    """
+    Custom JWT Authentication Serializer supporting login by either username or email address.
+    Performs case-insensitive matching and authenticates user password.
+    """
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, write_only=True)
+
+    def validate(self, attrs):
+        username_or_email = attrs.get('username', '').strip()
+        password = attrs.get('password', '')
+
+        if not username_or_email or not password:
+            raise serializers.ValidationError({"detail": "Username/email and password are required."})
+
+        # Lookup candidate users matching either username or email (case-insensitive)
+        candidates = list(User.objects.filter(
+            Q(username__iexact=username_or_email) | Q(email__iexact=username_or_email)
+        ).order_by('-date_joined'))
+
+        from rest_framework.exceptions import AuthenticationFailed
+
+        if not candidates:
+            raise AuthenticationFailed("No active account found with the given credentials.")
+
+        # Find matching user whose password is correct
+        matched_user = None
+        for candidate in candidates:
+            if candidate.check_password(password):
+                matched_user = candidate
+                break
+
+        if not matched_user:
+            raise AuthenticationFailed("No active account found with the given credentials.")
+
+        if not matched_user.is_active:
+            raise AuthenticationFailed("This user account is inactive. Please contact support.")
+
+        from rest_framework_simplejwt.tokens import RefreshToken
+        refresh = RefreshToken.for_user(matched_user)
+        self.user = matched_user
+
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     """Serializer for client onboarding and account registration."""
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -146,8 +195,12 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
             raise serializers.ValidationError({"password_confirm": "Password fields do not match."})
-        if User.objects.filter(email=attrs['email']).exists():
-            raise serializers.ValidationError({"email": "A user with this email address already exists."})
+        username = attrs.get('username', '').strip()
+        email = attrs.get('email', '').strip()
+        if User.objects.filter(username__iexact=username).exists():
+            raise serializers.ValidationError({"username": "This username is already taken. Please sign in or choose another."})
+        if User.objects.filter(email__iexact=email).exists():
+            raise serializers.ValidationError({"email": "An account with this email address already exists. Please sign in instead."})
         return attrs
 
     def create(self, validated_data):
